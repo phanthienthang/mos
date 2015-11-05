@@ -133,8 +133,8 @@ public class FloorTest
 	private void deactiveFloor()
 	{
 		WebDriverWait lWait = new WebDriverWait(mDriver, 10);
-		lWait.until(ExpectedConditions.elementToBeClickable(By.id("00N28000006kXDk")));
-		WebElement lActiveElem = mDriver.findElement(By.id("00N28000006kXDk"));
+		lWait.until(ExpectedConditions.elementToBeClickable(By.id("00N28000007Hr4A")));
+		WebElement lActiveElem = mDriver.findElement(By.id("00N28000007Hr4A"));
 		if (lActiveElem.isSelected()) {
 			lActiveElem.click();
 		}

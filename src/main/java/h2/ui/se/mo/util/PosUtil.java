@@ -40,8 +40,7 @@ public class PosUtil
 		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
 
 		ChromeOptions options = new ChromeOptions();
-		options.addExtensions(
-				new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
+		options.addExtensions(new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
 				// options.setBinary(new
 				// File("E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe"));
 
@@ -412,11 +411,49 @@ public class PosUtil
 				if (lHoldTable.matches(lElem.getText().replaceAll("\\W", ""))){
 					return lElem;
 				}
-				
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Random pick category
+	 * @param iDriver
+	 */
+	public static void handleRdmCategory(WebDriver iDriver)
+	{
+		List<WebElement> lCategoryList = iDriver.findElements(By.cssSelector("li[ng-repeat='category in orderData.categories']"));
+		WebElement lCategoryRdm = lCategoryList.get(random(lCategoryList.size()));
+		System.out.println("Category: "+lCategoryRdm.getText());
+		lCategoryRdm.click();
+	}
+	
+	/**
+	 * Random pick menu
+	 * @param iDriver
+	 */
+	public static void handleRdmMenu(WebDriver iDriver)
+	{
+		List<WebElement> lMenuList = iDriver.findElements(By.cssSelector("a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum"));
+		WebElement lMenuRdm = lMenuList.get(random(lMenuList.size()));
+		System.out.println("Menu: "+lMenuRdm.getText());
+		lMenuRdm.click();
+	}
+	
+	public static void handleRdmMale(WebDriver iDriver) {
+		WebElement lMale = iDriver.findElement(By.id("male"));
+	}
+	
+	public static void handleRdmFemale(WebDriver iDriver){
+		WebElement lFemale = iDriver.findElement(By.id("female"));
+	}
+	
+	public static void handleRdmComment(WebDriver iDriver){
 		
+	}
+	
+	public static void sendOrder(WebDriver iDriver){
+		iDriver.findElement(By.linkText("SEND")).click();
 	}
 
 	

@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
@@ -31,6 +33,7 @@ public class PosUtil
 {
 	
 	public enum OS { windows, mac }
+	public enum FILTER {ID, XPATH, NAME, CSS}
 	
 	protected static OS mPlatform = OS.windows;
 	protected static Map<String, WebElement> configs;
@@ -69,7 +72,8 @@ public class PosUtil
 	protected static WebDriver login(WebDriver iDriver) throws InterruptedException
 	{
 		Thread.sleep(1000);
-		if (iDriver.getWindowHandles().size() > 1) {
+		if (iDriver.getWindowHandles().size() > 1)
+		{
 			return handleLogin(iDriver);
 		}
 		return login(iDriver);
@@ -82,24 +86,18 @@ public class PosUtil
 	protected static WebDriver handleLogin(WebDriver iDriver) 
 	{
 		ArrayList<String> lTabs = new ArrayList<String> (iDriver.getWindowHandles());
-		String lPostTab = lTabs.get(0);
-		String lLoginTab = lTabs.get(1);
+		String lPosWindow = lTabs.get(0);
+		String lLoginWindow = lTabs.get(1);
 		
-		iDriver.switchTo().window(lLoginTab);
-		WebDriverWait lDriverWaitLogin = new WebDriverWait(iDriver,10);
-		WebElement lWEle = lDriverWaitLogin.until(ExpectedConditions.elementToBeClickable(By.id("Login")));
+		iDriver.switchTo().window(lLoginWindow);
+		waitClickId(iDriver, "Login");
 		
-		if (lWEle.isDisplayed()) 
-		{
-			//Enter user information
-			fillInfo(iDriver);
-			
-			WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
-			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("oaapprove")));
-			iDriver.findElement(By.id("oaapprove")).click();
-		}
+		//Enter user information
+		fillInfo(iDriver);
 		
-		iDriver.switchTo().window(lPostTab);
+		waitClickId(iDriver, "oaapprove");
+		
+		iDriver.switchTo().window(lPosWindow);
 		
 		return iDriver;
 	}
@@ -137,16 +135,20 @@ public class PosUtil
 	
 	public static void fillInfo(WebDriver iDriver)
 	{
-		iDriver.findElement(By.id("username")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_USER));
-		iDriver.findElement(By.id("password")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_PASSWORD));
-		try {
-			Thread.sleep(1000);
-		} 
-		catch (InterruptedException e)
+		if (CheckUtil.checkInputable(iDriver, "username")) 
 		{
-			e.printStackTrace();
+			iDriver.findElement(By.id("username")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_USER));
 		}
-		iDriver.findElement(By.id("Login")).click();
+		
+		if (CheckUtil.checkInputable(iDriver, "password")) 
+		{
+			iDriver.findElement(By.id("password")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_PASSWORD));
+			iDriver.findElement(By.id("password")).sendKeys(Keys.ENTER);
+			
+		}
+		
+		//waitClickId(iDriver, "Login");
+		
 	}
 	
 	public static WebDriver initChromeDriver() 
@@ -455,8 +457,63 @@ public class PosUtil
 	public static void sendOrder(WebDriver iDriver){
 		iDriver.findElement(By.linkText("SEND")).click();
 	}
-
 	
+	public static void waitClickId(WebDriver iDriver, String iId)
+	{
+		if (!CheckUtil.checkExistID(iDriver, iId))
+		{
+			waitClickId(iDriver, iId);
+		}
+		
+		iDriver.findElement(By.id(iId)).click();
+	}
 	
+	public static void waitClickXPath(WebDriver iDriver, String iXPath)
+	{
+		if (!CheckUtil.checkExistXPath(iDriver, iXPath)) {
+			waitClickXPath(iDriver, iXPath);
+		}
+		
+		iDriver.findElement(By.xpath(iXPath)).click();
+		
+	}
+	
+	public static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
+	{
+		if (!CheckUtil.checkExistCssSelector(iDriver, iCssSelector)) {
+			waitClickCssSelector(iDriver, iCssSelector);
+		}
+		
+		iDriver.findElement(By.xpath(iCssSelector)).click();
+		
+	}
+	
+	public static void waitClickName(WebDriver iDriver, String iName) 
+	{
+		if (!CheckUtil.checkExistName(iDriver, iName)) {
+			waitClickName(iDriver, iName);
+		}
+		
+		iDriver.findElement(By.name(iName)).click();
+	}
+	
+	public static void findnClick(WebDriver iDriver, FILTER iFilter, String iContent) 
+	{
+		switch (iFilter) {
+		case ID: 
+			waitClickId(iDriver, iContent);
+			break;
+		case CSS:
+			waitClickCssSelector(iDriver, iContent);
+			break;
+		case XPATH:
+			waitClickXPath(iDriver, iContent);
+			break;
+		case NAME:
+			waitClickName(iDriver, iContent);
+			break;
+		}
+		
+	}
 
 }

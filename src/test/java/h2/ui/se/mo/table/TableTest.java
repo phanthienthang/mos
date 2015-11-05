@@ -2,10 +2,8 @@ package h2.ui.se.mo.table;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.ClickAndHoldAction;
-import org.openqa.selenium.interactions.Mouse;
-import org.openqa.selenium.interactions.internal.MouseAction;
-import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.remote.server.handler.interactions.MouseDown;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -271,9 +264,15 @@ public class TableTest {
 		handleOrderMenu(lOrderedTable);
 		
 		Thread.sleep(1000);
-		//Set the order
+		
+		//Order
 		mDriver.findElement(By.id("done")).click();
 		
+		Thread.sleep(1000);
+		
+		PosUtil.handleRdmCategory(mDriver);
+		
+		PosUtil.handleRdmMenu(mDriver);
 		
 	}
 	
@@ -295,16 +294,16 @@ public class TableTest {
 	 */
 	private void handleInActive()
 	{
-		handleActiveCheckbox("00N28000006kXH8");
+		handleActiveCheckbox("00N28000007Hr7Y");
 	}
 	
 	private void handleIsAccount(){
-		handleActiveCheckbox("00N28000006kXH9");
+		handleActiveCheckbox("00N28000007Hr7Z");
 	}
 	
 	private void handleIsTmp()
 	{
-		handleActiveCheckbox("00N28000006kXHA");
+		handleActiveCheckbox("00N28000007Hr7a");
 	}
 	
 	private void handleActiveCheckbox(String iId)

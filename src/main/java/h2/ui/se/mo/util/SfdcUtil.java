@@ -104,7 +104,7 @@ public class SfdcUtil {
 	 */
 	public static void search(WebDriver iDriver, String iObject, String iSearchText) throws InterruptedException 
 	{
-		WebDriverWait lWait = new WebDriverWait(iDriver, 10);
+		WebDriverWait lWait = new WebDriverWait(iDriver, 30);
 		lWait.until(ExpectedConditions.elementToBeClickable(By.id("sen")));
 		WebElement lSenElem = iDriver.findElement(By.id("sen"));
 		lSenElem.click();

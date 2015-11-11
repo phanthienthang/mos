@@ -16,9 +16,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import h2.ui.se.mo.floor.Floor;
 import h2.ui.se.mo.util.Browser;
+import h2.ui.se.mo.util.CheckOutPOSUtil;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.SfdcUtil;
 import h2.ui.se.mo.util.TableUtil;
+import h2.ui.se.mo.util.PosUtil.BY;
 
 public class TableTest {
 	
@@ -28,12 +30,12 @@ public class TableTest {
 	public void init() throws InterruptedException
 	{
 		
-		mDriver = PosUtil.initPos();
+		mDriver = PosUtil.init();
 		Thread.sleep(2000);
 		
 	}
 	
-	private void initData() throws InterruptedException
+	private void initSfdc() throws InterruptedException
 	{
 		Browser.loginSalesforce(mDriver);
 		
@@ -56,7 +58,7 @@ public class TableTest {
 	//@Test
 	public void testAddTable() throws InterruptedException, IOException 
 	{
-		initData();
+		initSfdc();
 		
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
@@ -80,28 +82,7 @@ public class TableTest {
 		mDriver.close();
 		mDriver.switchTo().window(lPosWindow);
 		
-		Thread.sleep(1000);
-		PosUtil.openSetting(mDriver, "SETTINGS");
-		
-		Thread.sleep(1000);
-		PosUtil.openDataAdmin(mDriver);
-		
-		Thread.sleep(1000);
 		PosUtil.refesh(mDriver);
-		
-		Thread.sleep(3000);
-		
-		mDriver.switchTo().alert().accept();
-		Thread.sleep(2000);
-		List<String> lWindows = new ArrayList<String>(mDriver.getWindowHandles());
-		mDriver.switchTo().window(lWindows.get(0));
-		PosUtil.back(mDriver);
-		
-		Thread.sleep(2000);
-		PosUtil.menu(mDriver);
-	
-		Thread.sleep(1000);
-		PosUtil.openSetting(mDriver, "ORDERS");
 		
 		Map<String, List<WebElement>> lFloorMap = TableUtil.parse(mDriver);
 		List<WebElement> lTableList = lFloorMap.get(mFloor.getName());
@@ -110,7 +91,7 @@ public class TableTest {
 		{
 			if (lEle.getText().contains(lTable.getName())) 
 			{
-				PosUtil.screenShot(mDriver, lEle, lTable.getName());
+				PosUtil.takeScreenShot(mDriver, lEle, lTable.getName());
 				break;
 			}
 		}
@@ -120,7 +101,7 @@ public class TableTest {
 	//@Test
 	public void testAddTables() throws InterruptedException
 	{
-		initData();
+		initSfdc();
 		
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
@@ -152,7 +133,7 @@ public class TableTest {
 	//@Test
 	public void testUpdateTable() throws InterruptedException 
 	{
-		initData();
+		initSfdc();
 		
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
@@ -168,7 +149,7 @@ public class TableTest {
 		//Random Edit
 		PosUtil.randomEdit(mDriver);
 		
-		handleInActive();
+		activeTable();
 		
 		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
@@ -228,11 +209,11 @@ public class TableTest {
 	}
 	
 	//即時会計 - F-1-3-3/T-1-3-3-1
-	@Test
-	public void testF133T1331() throws InterruptedException
+	//@Test
+	public void testF133T1331() throws InterruptedException, IOException
 	{
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
-		initData();
+		initSfdc();
 		
 		//Open Table window
 		SfdcUtil.openTab(mDriver, "テーブルマスタ");
@@ -246,35 +227,84 @@ public class TableTest {
 		//Get name of the table
 		String lSelectedTbl = mDriver.findElement(By.id("Name")).getAttribute("value");
 		
-		handleIsAccount();
+		activeAccount();
 		
-		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
 		
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		mDriver.close();
 		mDriver.switchTo().window(lPosWindow);
 		
 		mDriver.get(mDriver.getCurrentUrl());
 		
-		//POS Processing
-		WebElement lOrderedTable = PosUtil.pickOrderTable(mDriver, lSelectedTbl);
-		
 		//Handle Order Menu
-		handleOrderMenu(lOrderedTable);
+		handleOrderMenu(mDriver, lSelectedTbl, 0, 0, 0, "即時会計 - F-1-4-2-1");
 		
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		
-		//Order
-		mDriver.findElement(By.id("done")).click();
+		//Send / Transform Order
+		PosUtil.findnClick(mDriver, BY.LINKTEXT, "SEND");
 		
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		
-		PosUtil.handleRdmCategory(mDriver);
-		
-		PosUtil.handleRdmMenu(mDriver);
+		PosUtil.screenshot(mDriver, "T1331.png");
 		
 	}
+	
+	@Test
+	public void testF141T1411() throws InterruptedException 
+	{
+		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
+		initSfdc();
+		
+		//Open Table window
+		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		
+		//Browse tabbles
+		PosUtil.browse(mDriver);
+		
+		//Random Edit
+		PosUtil.randomEdit(mDriver);
+		
+		//Get name of the table
+		String lSelectedTbl = mDriver.findElement(By.id("Name")).getAttribute("value");
+		
+		activeAccount();
+		
+		mDriver.findElement(By.name("save")).click();
+		
+		Thread.sleep(3000);
+		mDriver.close();
+		mDriver.switchTo().window(lPosWindow);
+		
+		mDriver.get(mDriver.getCurrentUrl());
+		
+		//Handle Order Menu
+		handleOrderMenu(mDriver, lSelectedTbl, 0, 0, 0, "F141-T1411");
+		
+		Thread.sleep(2000);
+		
+		//Send // Transform Order
+		PosUtil.findnClick(mDriver, BY.LINKTEXT, "SEND");
+		
+		Thread.sleep(2000);
+		CheckOutPOSUtil.handlePayByCash(mDriver);
+		
+		Thread.sleep(2000);
+		CheckOutPOSUtil.handleCheckOut(mDriver);
+	}
+	
+	//@Test
+	public void testF141T1412() {
+		
+	}
+	
+	//@Test 
+	public void testF141T1413() {
+		
+	}
+	
+	
 	
 
 	/**
@@ -292,23 +322,23 @@ public class TableTest {
 	/**
 	 * Inactive table
 	 */
-	private void handleInActive()
+	private void activeTable()
 	{
 		handleActiveCheckbox("00N28000007Hr7Y");
 	}
 	
-	private void handleIsAccount(){
+	private void activeAccount(){
 		handleActiveCheckbox("00N28000007Hr7Z");
 	}
 	
-	private void handleIsTmp()
+	private void activeTemp()
 	{
 		handleActiveCheckbox("00N28000007Hr7a");
 	}
 	
 	private void handleActiveCheckbox(String iId)
 	{
-		WebDriverWait lWait = new WebDriverWait(mDriver, 10);
+		WebDriverWait lWait = new WebDriverWait(mDriver, 30);
 		lWait.until(ExpectedConditions.elementToBeClickable(By.id(iId)));
 		WebElement lActiveElem = mDriver.findElement(By.id(iId));
 		if (!lActiveElem.isSelected()) 
@@ -374,16 +404,9 @@ public class TableTest {
 	}
 	
 	
-	private void handleOrderMenu(WebElement iTable) throws InterruptedException{
-		Thread.sleep(1000);
-		PosUtil.openSetting(mDriver, "ORDERS");
-		Thread.sleep(2000);
-		//lTableList.get(lTableRdm).click();
-		
-		Actions lBuilder = new Actions(mDriver);
-		lBuilder.click(iTable).build().perform();
-		Thread.sleep(2000);
-		
+	private void handleOrderMenu(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice,  String iComment) throws InterruptedException 
+	{
+		PosUtil.order(iDriver, iTable, iServiceCharge, iRate, iPrice, iComment);
 	}
 	
 }

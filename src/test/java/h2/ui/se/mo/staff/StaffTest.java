@@ -23,7 +23,7 @@ public class StaffTest {
 	@Before
 	public void init() throws InterruptedException
 	{
-		mDriver = PosUtil.initPos();
+		mDriver = PosUtil.init();
 		Thread.sleep(2000);
 	}
 

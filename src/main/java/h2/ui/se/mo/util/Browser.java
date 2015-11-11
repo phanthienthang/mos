@@ -10,6 +10,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import h2.ui.se.mo.util.PosUtil.BY;
+
 /**
  * @author thienthang
  *
@@ -94,16 +96,13 @@ public class Browser
 		iDriver.switchTo().window(lTabs.get(1));
 		iDriver.get("https://www.salesforce.com");
 		
-		WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
-		lDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("button-login")));
-		iDriver.findElement(By.id("button-login")).click();
-		Thread.sleep(1000);
-		PosUtil.fillInfo(iDriver);
+		PosUtil.findnClick(iDriver, BY.ID, "button-login");
+		PosUtil.loginInputHandle(iDriver);
 	}
 	
 	public static void openAllMOTab(WebDriver iDriver)
 	{
-		WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
+		WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
 		lDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("AllTab_Tab")));
 		iDriver.findElement(By.id("AllTab_Tab")).click();
 	}

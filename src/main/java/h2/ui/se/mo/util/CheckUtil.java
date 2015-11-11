@@ -97,6 +97,11 @@ public class CheckUtil
 	}
 	
 	
+	/**
+	 * @param iDriver
+	 * @param iCssSelector
+	 * @return
+	 */
 	private static boolean isExistCssSelector(WebDriver iDriver, String iCssSelector) 
 	{
 		try
@@ -122,17 +127,27 @@ public class CheckUtil
 		return false;
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iCssSelector
+	 * @return
+	 */
 	public static boolean checkExistCssSelector(WebDriver iDriver, String iCssSelector) 
 	{
 		return isExistCssSelector(iDriver, iCssSelector);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iName
+	 * @return
+	 */
 	private static boolean isExistName(WebDriver iDriver, String iName) 
 	{
 		try
 		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
-			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.cssSelector(iName)));
+			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.name(iName)));
 			if (iDriver.findElement(By.name(iName)).isDisplayed())
 			{
 				return true;
@@ -153,9 +168,77 @@ public class CheckUtil
 		return false;
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iName
+	 * @return
+	 */
 	public static boolean checkExistName(WebDriver iDriver, String iName) 
 	{
 		return isExistName(iDriver, iName);
+	}
+	
+	private static boolean isInputable(WebDriver iDriver, String iId) 
+	{
+		try
+		{
+			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
+			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.id(iId)));
+			if (iDriver.findElement(By.id(iId)).isDisplayed())
+			{
+				return true;
+			}
+			
+			return false;
+			
+		} catch (NotFoundException e){
+			System.out.println("Element was not found!");
+			return false;
+			
+		} catch (TimeoutException e) {
+			System.out.println("Loading time is expired!");
+			new Throwable(e.getMessage());
+			//return true;
+		}
+		
+		return false;
+		
+	}
+	
+	public static boolean checkInputable(WebDriver iDriver, String iId)
+	{
+		return isInputable(iDriver, iId);
+		
+	}
+
+	public static boolean checkExistLink(WebDriver iDriver, String iLink) 
+	{
+		return isExistLink(iDriver, iLink);
+	}
+
+	private static boolean isExistLink(WebDriver iDriver, String iLink) 
+	{
+		try
+		{
+			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
+			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.linkText(iLink)));
+			if (iDriver.findElement(By.linkText(iLink)).isDisplayed())
+			{
+				return true;
+			}
+			
+			return false;
+			
+		} catch (NotFoundException e){
+			System.out.println("Element was not found!");
+			return false;
+			
+		} catch (TimeoutException e) {
+			System.out.println("Loading time is expired!");
+			new Throwable(e.getMessage());
+		}
+		
+		return false;
 	}
 
 }

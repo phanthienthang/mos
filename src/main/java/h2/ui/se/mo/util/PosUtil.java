@@ -26,20 +26,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import h2.ui.se.mo.util.PosUtil.BY;
 
 public class PosUtil 
 {
 	
 	public enum OS { windows, mac }
-	public enum FILTER {ID, XPATH, NAME, CSS}
+	public enum BY {ID, XPATH, NAME, CSS, LINKTEXT, PARTIALLINKTEXT, TAGNAME, CLASS }
 	
 	protected static OS mPlatform = OS.windows;
 	protected static Map<String, WebElement> configs;
 	
-	public static WebDriver initPos() throws InterruptedException 
+	public static WebDriver init() throws InterruptedException 
 	{
+		
 		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
 
 		ChromeOptions options = new ChromeOptions();
@@ -49,6 +53,7 @@ public class PosUtil
 
 		// For use with ChromeDriver:
 		WebDriver driver = new ChromeDriver(options);
+		
 		//driver.manage().window().maximize();
 		driver.get("chrome://apps/");
 
@@ -69,6 +74,11 @@ public class PosUtil
 		return login(driver);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 * @throws InterruptedException
+	 */
 	protected static WebDriver login(WebDriver iDriver) throws InterruptedException
 	{
 		Thread.sleep(1000);
@@ -90,12 +100,12 @@ public class PosUtil
 		String lLoginWindow = lTabs.get(1);
 		
 		iDriver.switchTo().window(lLoginWindow);
-		waitClickId(iDriver, "Login");
+		findnClick(iDriver, BY.ID, "Login");
 		
 		//Enter user information
-		fillInfo(iDriver);
+		loginInputHandle(iDriver);
 		
-		waitClickId(iDriver, "oaapprove");
+		findnClick(iDriver, BY.ID, "oaapprove");
 		
 		iDriver.switchTo().window(lPosWindow);
 		
@@ -133,7 +143,7 @@ public class PosUtil
 		return mPlatform;
 	}
 	
-	public static void fillInfo(WebDriver iDriver)
+	public static void loginInputHandle(WebDriver iDriver)
 	{
 		if (CheckUtil.checkInputable(iDriver, "username")) 
 		{
@@ -190,19 +200,35 @@ public class PosUtil
 	    }
 	}*/
 	
+	/**
+	 * Order settings
+	 * 
+	 * @param iDriver
+	 * @param iName
+	 * @throws InterruptedException
+	 */
 	public static void openSetting(WebDriver iDriver, String iName) throws InterruptedException
 	{
 		if (!isMenuDisplay(iDriver, iName))
 		{
 			menu(iDriver);
 		}
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		//iDriver.findElement(By.xpath("//a[contains(text(), '"+iName+"')]")).click();
 		
 		Map<String, WebElement> settings =  parseElement(iDriver, "li");
 		settings.get(iName).click();
 	}
 	
+	
+	
+	/**
+	 * Parse element
+	 * 
+	 * @param iDriver
+	 * @param iTag
+	 * @return
+	 */
 	private static Map<String, WebElement> parseElement(WebDriver iDriver, String iTag)
 	{
 		
@@ -220,9 +246,17 @@ public class PosUtil
 	/**
 	 * Refresh data from the changing of master table
 	 * @param iDriver
+	 * @throws InterruptedException 
 	 */
-	public static void refesh(WebDriver iDriver)
+	public static void refesh(WebDriver iDriver) throws InterruptedException
 	{
+		Thread.sleep(1000);
+		PosUtil.openSetting(iDriver, "SETTINGS");
+		
+		Thread.sleep(1000);
+		PosUtil.openDataAdmin(iDriver);
+		
+		Thread.sleep(1000);
 		List<WebElement> lEleList = iDriver.findElements(By.tagName("a"));
 		for(WebElement lEle: lEleList)
 		{
@@ -232,6 +266,19 @@ public class PosUtil
 			 }
 		}
 		
+		Thread.sleep(3000);
+		
+		iDriver.switchTo().alert().accept();
+		Thread.sleep(2000);
+		List<String> lWindows = new ArrayList<String>(iDriver.getWindowHandles());
+		iDriver.switchTo().window(lWindows.get(0));
+		PosUtil.back(iDriver);
+		
+		Thread.sleep(2000);
+		PosUtil.menu(iDriver);
+	
+		Thread.sleep(1000);
+		PosUtil.openSetting(iDriver, "ORDERS");
 	}
 
 	/**
@@ -263,7 +310,7 @@ public class PosUtil
 	 */
 	public static void menu(WebDriver iDriver)
 	{
-		iDriver.findElement(By.id("menu")).click();
+		findnClick(iDriver, BY.ID, "menu");
 	}
 
 	/**
@@ -274,9 +321,8 @@ public class PosUtil
 	 * @param iFileName
 	 * @throws IOException
 	 */
-	public static void screenShot(WebDriver iDriver, WebElement lElem, String iFileName) throws IOException
+	public static void takeScreenShot(WebDriver iDriver, WebElement lElem, String iFileName) throws IOException
 	{
-
 		// Select the target WebElement
 
 		// Take screenshot and save to file
@@ -316,11 +362,8 @@ public class PosUtil
 	 */
 	public static WebDriver cancel(WebDriver iDriver, String iPosWindow) throws InterruptedException
 	{
-		WebDriverWait lWait = new WebDriverWait(iDriver, 10);
-		lWait.until(ExpectedConditions.elementToBeClickable(By.name("cancel")));
-		iDriver.findElement(By.name("cancel")).click();
+		findnClick(iDriver, BY.NAME, "cancel");
 		
-		Thread.sleep(2000);
 		iDriver.close();
 		iDriver.switchTo().window(iPosWindow);
 		
@@ -338,21 +381,21 @@ public class PosUtil
 	 */
 	public static void browse(WebDriver iDriver) throws InterruptedException
 	{
-		Thread.sleep(2000);
 		//WebDriverWait lWait = new WebDriverWait(iDriver, 10);
 		//lWait.until(ExpectedConditions.elementToBeClickable(By.id("go")));
-		iDriver.findElement(By.name("go")).click();
+		findnClick(iDriver, BY.NAME, "go");
 	}
 	
-	public static void randomEdit(WebDriver iDriver) throws InterruptedException 
+	public static void randomEdit(WebDriver iDriver)
 	{
-		Thread.sleep(2000);
-		//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
-		List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-		int lRandomFloor = random(lElems.size())+1;
-		
-		//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
-		lElems.get(lRandomFloor).click();
+		if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
+			//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
+			List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
+			int lRandomFloor = random(lElems.size())+1;
+			
+			//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
+			lElems.get(lRandomFloor).click();
+		}
 	}
 	
 	/**
@@ -390,8 +433,9 @@ public class PosUtil
 	 */
 	public static boolean isMenuDisplay(WebDriver iDriver, String iMenuItem){
 		
-		try {
-			WebDriverWait lAlertWait = new WebDriverWait(iDriver, 10);
+		try 
+		{
+			WebDriverWait lAlertWait = new WebDriverWait(iDriver, 30);
 			lAlertWait.until(ExpectedConditions.elementToBeClickable(By.id("slide-menu")));
 			if (iDriver.findElement(By.id("slide-menu")).isDisplayed()){
 				return true;
@@ -424,7 +468,7 @@ public class PosUtil
 	 */
 	public static void handleRdmCategory(WebDriver iDriver)
 	{
-		List<WebElement> lCategoryList = iDriver.findElements(By.cssSelector("li[ng-repeat='category in orderData.categories']"));
+		List<WebElement> lCategoryList = findElements(iDriver, BY.CSS, "li[ng-repeat='category in orderData.categories']");
 		WebElement lCategoryRdm = lCategoryList.get(random(lCategoryList.size()));
 		System.out.println("Category: "+lCategoryRdm.getText());
 		lCategoryRdm.click();
@@ -436,29 +480,45 @@ public class PosUtil
 	 */
 	public static void handleRdmMenu(WebDriver iDriver)
 	{
-		List<WebElement> lMenuList = iDriver.findElements(By.cssSelector("a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum"));
+		List<WebElement> lMenuList = findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
 		WebElement lMenuRdm = lMenuList.get(random(lMenuList.size()));
 		System.out.println("Menu: "+lMenuRdm.getText());
 		lMenuRdm.click();
 	}
 	
-	public static void handleRdmMale(WebDriver iDriver) {
-		WebElement lMale = iDriver.findElement(By.id("male"));
+	private static void handleRdmMale(WebDriver iDriver)
+	{
+		handleRdmSex(iDriver, "male");
 	}
 	
-	public static void handleRdmFemale(WebDriver iDriver){
-		WebElement lFemale = iDriver.findElement(By.id("female"));
+	private static void handleRdmFemale(WebDriver iDriver)
+	{
+		handleRdmSex(iDriver, "female");
 	}
 	
-	public static void handleRdmComment(WebDriver iDriver){
+	private static void handleRdmSex(WebDriver iDriver, String iSex){
+		WebElement lFemale = iDriver.findElement(By.id(iSex));
+		List<WebElement> lOptionList = lFemale.findElements(By.xpath(".//option"));
+		int lRdmNo = random(lOptionList.size());
+		lOptionList.get(lRdmNo).click();
+	}
+	
+	public static void handleRdmComment(WebDriver iDriver)
+	{
 		
+	}
+	
+	public static void handleComment(WebDriver iDriver, String iComment)
+	{
+		//findnClick(iDriver, BY.ID, "comment");
+		iDriver.findElement(By.id("comment")).sendKeys(iComment);
 	}
 	
 	public static void sendOrder(WebDriver iDriver){
 		iDriver.findElement(By.linkText("SEND")).click();
 	}
 	
-	public static void waitClickId(WebDriver iDriver, String iId)
+	private static void waitClickId(WebDriver iDriver, String iId)
 	{
 		if (!CheckUtil.checkExistID(iDriver, iId))
 		{
@@ -468,19 +528,19 @@ public class PosUtil
 		iDriver.findElement(By.id(iId)).click();
 	}
 	
-	public static void waitClickXPath(WebDriver iDriver, String iXPath)
+	private static void waitClickXPath(WebDriver iDriver, String iXPath)
 	{
 		if (!CheckUtil.checkExistXPath(iDriver, iXPath)) {
 			waitClickXPath(iDriver, iXPath);
 		}
 		
 		iDriver.findElement(By.xpath(iXPath)).click();
-		
 	}
 	
-	public static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
+	private static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
 	{
-		if (!CheckUtil.checkExistCssSelector(iDriver, iCssSelector)) {
+		if (!CheckUtil.checkExistCssSelector(iDriver, iCssSelector)) 
+		{
 			waitClickCssSelector(iDriver, iCssSelector);
 		}
 		
@@ -488,7 +548,7 @@ public class PosUtil
 		
 	}
 	
-	public static void waitClickName(WebDriver iDriver, String iName) 
+	private static void waitClickName(WebDriver iDriver, String iName) 
 	{
 		if (!CheckUtil.checkExistName(iDriver, iName)) {
 			waitClickName(iDriver, iName);
@@ -497,7 +557,24 @@ public class PosUtil
 		iDriver.findElement(By.name(iName)).click();
 	}
 	
-	public static void findnClick(WebDriver iDriver, FILTER iFilter, String iContent) 
+	private static void waitClickLink(WebDriver iDriver, String iLink) 
+	{
+		if (!CheckUtil.checkExistLink(iDriver, iLink)) {
+			waitClickLink(iDriver, iLink);
+		}
+		
+		iDriver.findElement(By.linkText(iLink)).click();
+	}
+	
+	
+	/**
+	 * Find and click
+	 * 
+	 * @param iDriver
+	 * @param iFilter
+	 * @param iContent
+	 */
+	public static void findnClick(WebDriver iDriver, BY iFilter, String iContent) 
 	{
 		switch (iFilter) {
 		case ID: 
@@ -512,8 +589,188 @@ public class PosUtil
 		case NAME:
 			waitClickName(iDriver, iContent);
 			break;
+		case LINKTEXT:
+			waitClickLink(iDriver, iContent);
+			break;
 		}
 		
+	}
+	
+	/**
+	 * @param iDriver
+	 * @param iBy
+	 * @param iContent
+	 * @return
+	 */
+	private static List<WebElement> findElements(WebDriver iDriver, BY iBy, String iContent)
+	{
+		List<WebElement> lElementList = new ArrayList<WebElement>();
+		
+		
+		if (checkElements(iDriver, iBy, iContent)) 
+		{
+			switch (iBy) 
+			{
+			case CSS:
+				lElementList = iDriver.findElements(By.cssSelector(iContent));
+				break;
+			case LINKTEXT:
+				lElementList = iDriver.findElements(By.linkText(iContent));
+				break;
+			case TAGNAME:
+				lElementList = iDriver.findElements(By.tagName(iContent));
+				break;
+			case CLASS:
+				lElementList = iDriver.findElements(By.className(iContent));
+				break;
+			case PARTIALLINKTEXT:
+				lElementList = iDriver.findElements(By.partialLinkText(iContent));
+				break;
+			}
+		}
+		
+		return lElementList;
+	}
+	
+	
+	
+	private static boolean isElementsExist(WebDriver iDriver, BY iBy, String iContent) 
+	{
+		List<WebElement> lElementList = new ArrayList<WebElement>();
+		try {
+			WebDriverWait lWait = new WebDriverWait(iDriver, 30);
+			switch (iBy) {
+			case LINKTEXT:
+				lElementList = lWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.linkText(iContent)));
+				break;
+			case XPATH:
+				lElementList = lWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(iContent)));
+				break;
+			case CSS:
+				lElementList = lWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(iContent)));
+				break;
+			}
+			
+			if (lElementList != null && lElementList.size() != 0) {
+				return true;
+			}
+		}
+		catch (TimeoutException e)
+		{
+			new Throwable(e.getMessage());
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * @param iDriver
+	 * @param iBY
+	 * @param iContent
+	 * @return
+	 */
+	private static boolean checkElements(WebDriver iDriver, BY iBY, String iContent) 
+	{
+		return isElementsExist(iDriver, iBY, iContent);
+	}
+
+	private static void handleServiceCharge(WebDriver iDriver, int iServiceCharge)
+	{
+		iDriver.findElement(By.id("service_rate")).sendKeys(String.valueOf(iServiceCharge));
+	}
+
+	private static void handleDiscountRate(WebDriver iDriver, int iRate) 
+	{
+		iDriver.findElement(By.id("discount_rate")).sendKeys(String.valueOf(iRate));
+	}
+
+	public static void handleDiscountPrice(WebDriver iDriver, int iPrice)
+	{
+		iDriver.findElement(By.id("discount_price")).sendKeys(String.valueOf(iPrice));
+	}
+
+	public static void handleRdmComment(WebDriver iDriver, String iComment)
+	{
+		// TODO Not yet implemented
+		
+	}
+
+	public static void order(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException {
+		
+		//POS Processing
+		WebElement lTableElem = pickOrderTable(iDriver, iTable);
+		System.out.println("Order table: " + iTable);
+		
+		Thread.sleep(1000);
+		PosUtil.openSetting(iDriver, "ORDERS");
+		
+		Thread.sleep(2000);
+		//lTableList.get(lTableRdm).click();
+		
+		Actions lBuilder = new Actions(iDriver);
+		lBuilder.click(lTableElem).build().perform();
+		Thread.sleep(2000);
+		
+		handleRdmMale(iDriver);
+		
+		handleRdmFemale(iDriver);
+		
+		handleServiceCharge(iDriver, iServiceCharge);
+		
+		handleDiscountRate(iDriver, iRate);
+		
+		handleDiscountPrice(iDriver, iPrice);
+		
+		handleComment(iDriver, iComment);
+		
+		//Order
+		PosUtil.findnClick(iDriver, BY.ID, "done");
+		
+		//TODO - Implement the category check here!!!
+		Thread.sleep(5000);
+		handleRdmCategory(iDriver);
+		
+		Thread.sleep(2000);
+		handleRdmMenu(iDriver);
+		
+		Thread.sleep(2000);
+		handleConfirm(iDriver);
+		
+	}
+
+	private static void handleConfirm(WebDriver iDriver) 
+	{
+		findnClick(iDriver, BY.LINKTEXT, "ORDER.CONFIRM");
+	}
+
+	public static void screenshot(WebDriver iDriver, String iFileName) throws IOException 
+	{
+		// Select the target WebElement
+
+				// Take screenshot and save to file
+				File screenshot = ((TakesScreenshot) iDriver).getScreenshotAs(OutputType.FILE);
+
+				// Create instance of BufferedImage from captured screenshot
+				//BufferedImage img = ImageIO.read(screenshot);
+
+				// Get the Height and Width of WebElement
+
+				// Create Rectangle using Height and Width to get size
+				//Rectangle rect = new Rectangle(width, height);
+
+				// Get location of WebElement in a Point
+				//Point p = lElem.getLocation();
+				// This will provide X & Y co-ordinates of the WebElement
+
+				// Create an image for WebElement using its size and location
+				//BufferedImage dest = img.getSubimage(p.getX(), p.getY(), rect.width, rect.height);
+				// This will give image data specific to the WebElement
+
+				// Write back the image data into a File object
+				//ImageIO.write(dest, "png", screenshot);
+
+				// Copy the file to system ScreenshotPath
+				FileUtils.copyFile(screenshot, new File(iFileName));
 	}
 
 }

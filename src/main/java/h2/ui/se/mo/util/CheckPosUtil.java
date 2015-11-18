@@ -15,7 +15,7 @@ import h2.ui.se.mo.util.PosUtil.BY;
  * @author thienthang
  *
  */
-public class CheckPOSUtil 
+public class CheckPosUtil 
 {
 	
 	public enum Type {Info, Payment}
@@ -33,7 +33,7 @@ public class CheckPOSUtil
 	{
 		handlePayment(iDriver, "現金");
 		
-		int lTotal = Integer.valueOf(CheckPOSUtil.handleGetAmount(iDriver)) + Integer.valueOf(CheckPOSUtil.handleTaxAmount(iDriver));
+		int lTotal = Integer.valueOf(CheckPosUtil.handleGetAmount(iDriver)) + Integer.valueOf(CheckPosUtil.handleTaxAmount(iDriver));
 		//System.out.println("Total Amount: "+CheckOutPOSUtil.handleGetAmount(iDriver)+ " Tax:" + Integer.valueOf(CheckOutPOSUtil.handleTaxAmount(iDriver)));
 		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTotal));
 	}

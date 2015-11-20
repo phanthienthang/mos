@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -47,6 +48,7 @@ public class PosUtil
 		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
 
 		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--lang=ja");
 		options.addExtensions(new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
 				// options.setBinary(new
 				// File("E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe"));
@@ -67,6 +69,31 @@ public class PosUtil
 				break;
 			}
 		}
+		
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get(driver.getCurrentUrl());
+		
+		return login(driver);
+	}
+	
+	public static WebDriver initLocal() throws InterruptedException 
+	{
+		
+		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
+
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--lang=ja");
+		
+		options.addExtensions(new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
+				// options.setBinary(new
+				// File("E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe"));
+
+		// For use with ChromeDriver:
+		WebDriver driver = new ChromeDriver(options);
+		
+		//driver.manage().window().maximize();
+		driver.get("http://localhost:9000");
+
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.get(driver.getCurrentUrl());
@@ -436,7 +463,7 @@ public class PosUtil
 		try 
 		{
 			WebDriverWait lAlertWait = new WebDriverWait(iDriver, 30);
-			lAlertWait.until(ExpectedConditions.elementToBeClickable(By.id("slide-menu")));
+			lAlertWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("slide-menu")));
 			if (iDriver.findElement(By.id("slide-menu")).isDisplayed()){
 				return true;
 			}
@@ -450,16 +477,36 @@ public class PosUtil
 	public static WebElement pickOrderTable(WebDriver mDriver, String lHoldTable) throws InterruptedException
 	{
 		Map<String, List<WebElement>> lFloorMap = TableUtil.parseAElement(mDriver);
+		System.out.println("Holtable : "+ lHoldTable);
 		for (String lFloor: lFloorMap.keySet()) {
 			List<WebElement> lTableElems = lFloorMap.get(lFloor);
 			for (WebElement lElem: lTableElems)
 			{
-				if (lHoldTable.matches(lElem.getText().replaceAll("\\W", ""))){
+				System.out.println("Element Table : "+ lElem.getText());
+				if (lElem.getText().indexOf(lHoldTable) != -1)
+				{
 					return lElem;
 				}
 			}
 		}
 		return null;
+	}
+	
+	public static WebElement pickRdmTable(WebDriver iDriver) throws InterruptedException {
+		Map<String, List<WebElement>> lFloorMap = TableUtil.parseAElement(iDriver);
+		int lRdmFloor = random(lFloorMap.keySet().size());
+		//int lCount = 0; 
+		List<String> lFloorList = new ArrayList<String>();
+		
+		for (String lFloor: lFloorMap.keySet()) {
+			lFloorList.add(lFloor);
+		}
+		
+		List<WebElement> lTableElems = lFloorMap.get(lFloorList.get(lRdmFloor));
+		
+		return  lTableElems.get(random(lTableElems.size()));
+		
+		
 	}
 	
 	/**
@@ -602,7 +649,7 @@ public class PosUtil
 	 * @param iContent
 	 * @return
 	 */
-	private static List<WebElement> findElements(WebDriver iDriver, BY iBy, String iContent)
+	public static List<WebElement> findElements(WebDriver iDriver, BY iBy, String iContent)
 	{
 		List<WebElement> lElementList = new ArrayList<WebElement>();
 		
@@ -695,12 +742,15 @@ public class PosUtil
 		
 	}
 
-	public static void order(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException {
+	public static void orderByTable(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException {
 		
 		//POS Processing
 		WebElement lTableElem = pickOrderTable(iDriver, iTable);
 		System.out.println("Order table: " + iTable);
-		
+		handleOrder(iDriver, lTableElem, iServiceCharge, iRate, iPrice, iComment);
+	}
+	
+	private static void handleOrder(WebDriver iDriver, WebElement lTabElement, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException {
 		Thread.sleep(1000);
 		PosUtil.openSetting(iDriver, "ORDERS");
 		
@@ -708,7 +758,7 @@ public class PosUtil
 		//lTableList.get(lTableRdm).click();
 		
 		Actions lBuilder = new Actions(iDriver);
-		lBuilder.click(lTableElem).build().perform();
+		lBuilder.click(lTabElement).build().perform();
 		Thread.sleep(2000);
 		
 		handleRdmMale(iDriver);
@@ -735,9 +785,31 @@ public class PosUtil
 		
 		Thread.sleep(2000);
 		handleConfirm(iDriver);
+	}
+	
+	/**
+	 * Random order menu
+	 * 
+	 * @param iDriver
+	 * @throws InterruptedException
+	 */
+	public static String orderRandom(WebDriver iDriver) throws InterruptedException{
+		Thread.sleep(3000);
+		WebElement lRdmTable = pickRdmTable(iDriver);
+		String lTableName = lRdmTable.getText().replaceAll("\\W", "");
+		Thread.sleep(3000);
+		if (!isTabAvailable(lRdmTable)) {
+			orderRandom(iDriver);
+		}
+		Thread.sleep(3000);
+		handleOrder(iDriver, lRdmTable, 0, 0, 0, "Random Order");
 		
+		return lTableName;
 	}
 
+	/**
+	 * @param iDriver
+	 */
 	private static void handleConfirm(WebDriver iDriver) 
 	{
 		findnClick(iDriver, BY.LINKTEXT, "ORDER.CONFIRM");
@@ -771,6 +843,32 @@ public class PosUtil
 
 				// Copy the file to system ScreenshotPath
 				FileUtils.copyFile(screenshot, new File(iFileName));
+	}
+	
+	public static boolean isTabAvailable(WebElement iTab)
+	{
+		if (iTab.getAttribute("class").contains("empty")) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	public static void checkOut(WebDriver iDriver, String iTable) throws InterruptedException 
+	{
+		Thread.sleep(1000);
+		PosUtil.openSetting(iDriver, "ORDERS");
+		Thread.sleep(2000);
+		
+		WebElement lTable = pickOrderTable(iDriver, iTable);
+		
+		Actions lBuilder = new Actions(iDriver);
+		lBuilder.clickAndHold(lTable).build().perform();
+		Thread.sleep(2000);
+		lBuilder.release(lTable).build().perform();
+		
+		Thread.sleep(1000);
+		iDriver.findElement(By.linkText("CHECK.CHECKOUT")).click();
 	}
 
 }

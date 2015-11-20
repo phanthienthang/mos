@@ -172,6 +172,11 @@ public class SfdcUtil {
 		//発行元マスタ
 		
 	}
+
+	public static void viewSearchResult(WebDriver iDriver, String iResult) 
+	{
+		iDriver.findElement(By.linkText(iResult)).click();
+	}
 	
 	
 }

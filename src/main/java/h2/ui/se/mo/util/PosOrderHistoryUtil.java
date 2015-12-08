@@ -46,10 +46,15 @@ public class PosOrderHistoryUtil {
 	 * @param iDriver
 	 * @param iDate
 	 */
-	public static void filterByDay(WebDriver iDriver, String iDate) {
+	public static void filterByDay(WebDriver iDriver, String iDate)
+	{
 		handlePickDate(iDriver, iDate);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 */
 	public static String selectRdmCheck(WebDriver iDriver)
 	{
 		List<WebElement> lCheckList = PosUtil.findElements(iDriver, BY.CSS, "li[ng-repeat='check in history.checks']");
@@ -58,8 +63,10 @@ public class PosOrderHistoryUtil {
 		return lCheck.getText();
 	}
 	
-	public static void filterByMonth(){}
-	
+	/**
+	 * @param iDriver
+	 * @param iCheck
+	 */
 	public static void viewCheck(WebDriver iDriver, String iCheck)
 	{
 		List<WebElement> lCheckList = PosUtil.findElements(iDriver, BY.CSS, "li[ng-repeat='check in history.checks']");

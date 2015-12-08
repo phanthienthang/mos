@@ -36,7 +36,7 @@ public class CashBoxUtil
 	}
 	
 	/**
-	 * Auto enter value
+	 * Auto enter amount of the check through the pad number
 	 * 
 	 * @param iDriver
 	 * @param iPayCash

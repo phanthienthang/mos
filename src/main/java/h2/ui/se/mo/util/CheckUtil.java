@@ -18,8 +18,8 @@ public class CheckUtil
 	 */
 	private static boolean isExistID (WebDriver iDriver, String iID) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.id(iID)));
 			if (iDriver.findElement(By.id(iID)).isDisplayed())
@@ -28,16 +28,16 @@ public class CheckUtil
 			}
 			
 			return false;
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-			//return true;
-		}
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+//		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//			//return true;
+//		}
+//		return false;
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public class CheckUtil
 	 */
 	private static boolean isExistXPath(WebDriver iDriver, String iXPath) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.xpath(iXPath)));
 			if (iDriver.findElement(By.xpath(iXPath)).isDisplayed())
@@ -72,16 +72,16 @@ public class CheckUtil
 			}
 			
 			return false;
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-			//return true;
-		}
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+////		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//			//return true;
+//		}
+//		return false;
 	}
 	
 	/**
@@ -104,8 +104,8 @@ public class CheckUtil
 	 */
 	private static boolean isExistCssSelector(WebDriver iDriver, String iCssSelector) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.cssSelector(iCssSelector)));
 			if (iDriver.findElement(By.cssSelector(iCssSelector)).isDisplayed())
@@ -115,16 +115,16 @@ public class CheckUtil
 			
 			return false;
 			
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-			//return true;
-		}
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+//		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//			//return true;
+//		}
+//		return false;
 	}
 	
 	/**
@@ -144,8 +144,8 @@ public class CheckUtil
 	 */
 	private static boolean isExistName(WebDriver iDriver, String iName) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.name(iName)));
 			if (iDriver.findElement(By.name(iName)).isDisplayed())
@@ -155,17 +155,17 @@ public class CheckUtil
 			
 			return false;
 			
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-			//return true;
-		}
-		
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+//		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//			//return true;
+//		}
+//		
+//		return false;
 	}
 	
 	/**
@@ -180,8 +180,8 @@ public class CheckUtil
 	
 	private static boolean isInputable(WebDriver iDriver, String iId) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.id(iId)));
 			if (iDriver.findElement(By.id(iId)).isDisplayed())
@@ -191,17 +191,17 @@ public class CheckUtil
 			
 			return false;
 			
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-			//return true;
-		}
-		
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+//		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//			//return true;
+//		}
+//		
+//		return false;
 		
 	}
 	
@@ -218,8 +218,8 @@ public class CheckUtil
 
 	private static boolean isExistLink(WebDriver iDriver, String iLink) 
 	{
-		try
-		{
+//		try
+//		{
 			WebDriverWait lWaitDriver = new WebDriverWait(iDriver, 30);
 			lWaitDriver.until(ExpectedConditions.elementToBeClickable(By.linkText(iLink)));
 			if (iDriver.findElement(By.linkText(iLink)).isDisplayed())
@@ -229,16 +229,16 @@ public class CheckUtil
 			
 			return false;
 			
-		} catch (NotFoundException e){
-			System.out.println("Element was not found!");
-			return false;
-			
-		} catch (TimeoutException e) {
-			System.out.println("Loading time is expired!");
-			new Throwable(e.getMessage());
-		}
-		
-		return false;
+//		} catch (NotFoundException e){
+//			System.out.println("Element was not found!");
+//			return false;
+//			
+//		} catch (TimeoutException e) {
+//			System.out.println("Loading time is expired!");
+//			new Throwable(e.getMessage());
+//		}
+//		
+//		return false;
 	}
 
 }

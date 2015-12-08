@@ -1,7 +1,11 @@
 package h2.ui.se.mo.table;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +20,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import h2.ui.se.mo.floor.Floor;
 import h2.ui.se.mo.util.Browser;
-import h2.ui.se.mo.util.CheckOutPOSUtil;
+import h2.ui.se.mo.util.PosCheckUtil;
+import h2.ui.se.mo.util.PosOrderHistoryUtil;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.SfdcUtil;
 import h2.ui.se.mo.util.TableUtil;
@@ -30,7 +35,8 @@ public class TableTest {
 	public void init() throws InterruptedException
 	{
 		
-		mDriver = PosUtil.init();
+		//mDriver = PosUtil.init();
+		mDriver = PosUtil.initLocal();
 		Thread.sleep(2000);
 		
 	}
@@ -69,7 +75,7 @@ public class TableTest {
 		SfdcUtil.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
-		Browser.openNewWindow(mDriver);
+		Browser.newHandle(mDriver);
 		
 		//Add new Table
 		Table lTable = new Table("T04", mFloor.getName(), false, false, true);
@@ -112,7 +118,7 @@ public class TableTest {
 		SfdcUtil.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
-		Browser.openNewWindow(mDriver);
+		Browser.newHandle(mDriver);
 		
 		//Add new Table
 		
@@ -243,7 +249,7 @@ public class TableTest {
 		Thread.sleep(2000);
 		
 		//Send / Transform Order
-		PosUtil.findnClick(mDriver, BY.LINKTEXT, "SEND");
+		PosUtil.findnClick(mDriver, BY.LINKTEXT, "送信"); //SEND
 		
 		Thread.sleep(5000);
 		
@@ -251,8 +257,8 @@ public class TableTest {
 		
 	}
 	
-	@Test
-	public void testF141T1411() throws InterruptedException 
+	//@Test
+	public void testF141T1411() throws InterruptedException, IOException 
 	{
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		initSfdc();
@@ -285,26 +291,157 @@ public class TableTest {
 		Thread.sleep(2000);
 		
 		//Send // Transform Order
-		PosUtil.findnClick(mDriver, BY.LINKTEXT, "SEND");
+		PosUtil.findnClick(mDriver, BY.LINKTEXT, "送信"); //SEND
 		
 		Thread.sleep(2000);
-		CheckOutPOSUtil.handlePayByCash(mDriver);
+		PosCheckUtil.handlePayByCash(mDriver);
 		
 		Thread.sleep(2000);
-		CheckOutPOSUtil.handleCheckOut(mDriver);
+		PosCheckUtil.handleCheckOut(mDriver);
+		
+		Thread.sleep(2000);
+		PosUtil.screenshot(mDriver, "F141T1411.png");
 	}
 	
 	//@Test
-	public void testF141T1412() {
+	public void testF141T1412() throws InterruptedException, IOException {
 		
+		//String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
+		Thread.sleep(2000);
+		
+		PosUtil.openSetting(mDriver, "伝票履歴");
+		
+		Thread.sleep(2000);
+		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		
+		Thread.sleep(2000);
+		PosUtil.screenshot(mDriver, "F141T1412.png");
 	}
+	
 	
 	//@Test 
-	public void testF141T1413() {
+	public void testF141T1413() throws InterruptedException, IOException 
+	{
+		for (int i = 0; i < 5; i++) {
+			String lTable = PosUtil.orderRandom(mDriver);
+			
+			Thread.sleep(2000);
+			
+			//Send // Transform Order
+			PosUtil.findnClick(mDriver, BY.LINKTEXT, "送信"); //SEND
+			
+			Thread.sleep(3000);
+			PosUtil.checkOut(mDriver, lTable);
+			
+			Thread.sleep(2000);
+			PosCheckUtil.handlePayByCash(mDriver);
+			
+			Thread.sleep(2000);
+			PosCheckUtil.handleCheckOut(mDriver);
+			
+			Thread.sleep(1000);
+			PosCheckUtil.handleClose(mDriver);
+		}
 		
+		Thread.sleep(2000);
+
+		PosUtil.openSetting(mDriver, "伝票履歴");
+		
+		
+		Thread.sleep(2000);
+		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		
+		Thread.sleep(2000);
+		PosUtil.screenshot(mDriver, "F141T1413.png");
 	}
 	
+	//@Test
+	public void testF142T1421() throws InterruptedException, IOException {
+		
+		/*for (int i = 0; i < 2; i++) {
+			String lTable = PosUtil.orderRandom(mDriver);
+			
+			Thread.sleep(2000);
+			
+			//Send // Transform Order
+			PosUtil.findnClick(mDriver, BY.LINKTEXT, "SEND");
+			
+			Thread.sleep(3000);
+			PosUtil.checkOut(mDriver, lTable);
+			
+			Thread.sleep(2000);
+			CheckOutPOSUtil.handlePayByCash(mDriver);
+			
+			Thread.sleep(2000);
+			CheckOutPOSUtil.handleCheckOut(mDriver);
+			
+			Thread.sleep(1000);
+			CheckOutPOSUtil.handleClose(mDriver);
+		}*/
+		
+		//String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
+		Thread.sleep(2000);
+		
+		PosUtil.openSetting(mDriver, "伝票履歴");
+		
+		Thread.sleep(2000);
+		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		
+		String lRdmCheck = PosOrderHistoryUtil.selectRdmCheck(mDriver);
+		PosUtil.screenshot(mDriver, "F142T1421_Pos.png");
+		
+		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
+		initSfdc();
+		
+		//Open Table window
+		SfdcUtil.openTab(mDriver, "会計");
+		
+		SfdcUtil.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		SfdcUtil.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		PosUtil.screenshot(mDriver, "F142T1421_Salesforce.png");
+	}
 	
+	@Test
+	public void testF143T1413() throws InterruptedException, IOException {
+		Thread.sleep(5000);
+		
+		PosUtil.openSetting(mDriver, "伝票履歴");
+		
+		Thread.sleep(2000);
+		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		
+		Thread.sleep(5000);
+		String lRdmCheck = PosOrderHistoryUtil.selectRdmCheck(mDriver);
+		
+		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
+		
+		Thread.sleep(2000);
+		PosCheckUtil.handleCancel(mDriver);
+		//CheckOutPOSUtil.handleCheckOut(mDriver);
+		mDriver.switchTo().alert().accept();
+		if (PosUtil.hasAlert(mDriver))
+		{
+			mDriver.switchTo().alert().dismiss();
+		}
+		mDriver.switchTo().window(lPosWindow);
+		
+		Thread.sleep(2000);
+		PosUtil.screenshot(mDriver, "F143T1413_Pos.png");
+		
+		
+		initSfdc();
+		
+		//Open Table window
+		SfdcUtil.openTab(mDriver, "会計");
+		
+		SfdcUtil.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		SfdcUtil.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		PosUtil.screenshot(mDriver, "F143T1413_Salesforce.png");
+	}
 	
 
 	/**
@@ -377,7 +514,7 @@ public class TableTest {
 	private void handleClickAndHold(WebElement iTable, String iActionLink) throws InterruptedException{
 		
 		Thread.sleep(1000);
-		PosUtil.openSetting(mDriver, "ORDERS");
+		PosUtil.openSetting(mDriver, "注文");
 		Thread.sleep(2000);
 		//lTableList.get(lTableRdm).click();
 		
@@ -406,7 +543,9 @@ public class TableTest {
 	
 	private void handleOrderMenu(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice,  String iComment) throws InterruptedException 
 	{
-		PosUtil.order(iDriver, iTable, iServiceCharge, iRate, iPrice, iComment);
+		PosUtil.orderByTable(iDriver, iTable, iServiceCharge, iRate, iPrice, iComment);
 	}
+	
+	
 	
 }

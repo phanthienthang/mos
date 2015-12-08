@@ -35,7 +35,7 @@ public class FloorTest
 		openFloor();
 		
 		//Open New Floor Layout
-		Browser.openNewWindow(mDriver);
+		Browser.newHandle(mDriver);
 		
 		//Add new Floor
 		SfdcUtil.addFloor(mDriver, new Floor("F-Test"));
@@ -59,7 +59,7 @@ public class FloorTest
 		openFloor();
 		
 		//Open New Floor Layout
-		Browser.openNewWindow(mDriver);
+		Browser.newHandle(mDriver);
 		
 		//Add new Floors
 		for (int i = 1; i < 4; i++)

@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import h2.ui.se.mo.util.PosUtil.BY;
+
 public class NumpadUtil 
 {
 	static WebElement mEnter;
@@ -38,11 +40,16 @@ public class NumpadUtil
 	public static void handleInputNo(WebDriver iDriver, String iAmount)
 	{
 		List<WebElement> lNoElemList = parseTxtNo(iDriver, iAmount);
-		for (int i = 0; i < lNoElemList.size(); i++) {
-			lNoElemList.get(i).click();
+		if (lNoElemList.size() != 0) {
+			for (int i = 0; i < lNoElemList.size(); i++) {
+				lNoElemList.get(i).click();
+			}
+			mEnter.click();
+		}
+		else {
+			handleInputNo(iDriver, iAmount);
 		}
 		
-		mEnter.click();
 	}
 	
 	/**
@@ -55,13 +62,26 @@ public class NumpadUtil
 	public static void handleInputNo(WebDriver iDriver, String iAmount, Card iCardType) 
 	{
 		List<WebElement> lNoElemList = parseTxtNo(iDriver, iAmount);
-		for (int i = 0; i < lNoElemList.size(); i++) 
-		{
-			lNoElemList.get(i).click();
+		if (lNoElemList.size() != 0) {
+			for (int i = 0; i < lNoElemList.size(); i++) 
+			{
+				lNoElemList.get(i).click();
+			}
+			
+			mCard.click();
+			
+			List<WebElement> lCardList = PosUtil.findElements(iDriver, BY.CSS, "li[ng-repeat='publisherCompany in publisherCompanies']");
+			for (WebElement webElement : lCardList) {
+				WebElement lSpan = webElement.findElement(By.xpath(".//span"));
+				if (lSpan.getText().contains(iCardType.name())){
+					webElement.click();
+				}
+			}
+			mEnter.click();
 		}
-		
-		mEnter.click();
-		
+		else {
+			handleInputNo(iDriver, iAmount, iCardType);
+		}
 	}
 	
 	/**

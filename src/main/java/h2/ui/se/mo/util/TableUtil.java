@@ -8,8 +8,39 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import h2.ui.se.mo.table.Table;
+
 public class TableUtil 
 {
+	
+	public static void addTable(WebDriver iDriver, Table iTable) 
+	{
+		//テーブル名
+		iDriver.findElement(By.id("Name")).sendKeys(iTable.getName());
+		
+		//フロア
+		iDriver.findElement(By.id("CF00N28000006kXCA")).sendKeys(iTable.getFloor());
+		
+		//一時使用不可
+		if (iTable.isTempAvailable())
+		{
+			iDriver.findElement(By.id("00N28000006kXHA")).click();
+		}
+		
+		//即時会計
+		if (iTable.isImmediateCheckOut())
+		{
+			iDriver.findElement(By.id("00N28000006kXH9")).click();
+		}
+		
+		//有効フラグ
+		if (iTable.isActive())
+		{
+			iDriver.findElement(By.id("00N28000006kXH8")).click();
+		}
+		
+	}
+	
 	
 	/**
 	 * @param iDriver

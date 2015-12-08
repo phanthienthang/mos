@@ -14,7 +14,6 @@ import h2.ui.se.mo.util.Browser;
 import h2.ui.se.mo.util.Pattern;
 import h2.ui.se.mo.util.PosMenuOptionUtil;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.SfdcUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 public class CategoryMasterTest {
@@ -33,7 +32,7 @@ public class CategoryMasterTest {
 		Browser.openAllMOTab(lDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(lDriver, "カテゴリマスタ");
+		Browser.openTab(lDriver, "カテゴリマスタ");
 		
 		//Open New Layout
 		Browser.newHandle(lDriver);
@@ -56,7 +55,7 @@ public class CategoryMasterTest {
 		Browser.openAllMOTab(lDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(lDriver, "メニューマスタ");
+		Browser.openTab(lDriver, "メニューマスタ");
 		Browser.newHandle(lDriver);
 		Browser.kontinue(lDriver);
 		
@@ -76,7 +75,7 @@ public class CategoryMasterTest {
 		Browser.openAllMOTab(lDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(lDriver, "メニューマスタ");
+		Browser.openTab(lDriver, "メニューマスタ");
 		
 		for (int i = 0; i < lMenuList.size(); i++) {
 			
@@ -110,7 +109,7 @@ public class CategoryMasterTest {
 		Browser.openAllMOTab(lDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(lDriver, "メニューマスタ");
+		Browser.openTab(lDriver, "メニューマスタ");
 		editMenu(lDriver, lMenuList.get(0)); 
 		lDriver.close();
 		
@@ -142,7 +141,7 @@ public class CategoryMasterTest {
 		Browser.openAllMOTab(lDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(lDriver, "メニューマスタ");
+		Browser.openTab(lDriver, "メニューマスタ");
 		editMenu(lDriver, lMenuList.get(0));
 		String[] lOptions = new String[]{"大盛り", "少なめ", "野菜抜き"};
 		Menu.newMenuOption(lDriver);

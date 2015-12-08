@@ -13,8 +13,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import h2.ui.se.mo.util.Browser;
+import h2.ui.se.mo.util.FloorUtil;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.SfdcUtil;
 
 public class FloorTest 
 {
@@ -38,7 +38,7 @@ public class FloorTest
 		Browser.newHandle(mDriver);
 		
 		//Add new Floor
-		SfdcUtil.addFloor(mDriver, new Floor("F-Test"));
+		FloorUtil.addFloor(mDriver, new Floor("F-Test"));
 		
 		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
@@ -64,7 +64,7 @@ public class FloorTest
 		//Add new Floors
 		for (int i = 1; i < 4; i++)
 		{
-			SfdcUtil.addFloor(mDriver, new Floor("Test-F"+i));
+			FloorUtil.addFloor(mDriver, new Floor("Test-F"+i));
 			Thread.sleep(1000);
 			mDriver.findElement(By.name("save_new")).click();
 			Thread.sleep(1000);
@@ -87,7 +87,7 @@ public class FloorTest
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Floor window
-		SfdcUtil.openTab(mDriver, "フロアマスタ");
+		Browser.openTab(mDriver, "フロアマスタ");
 		
 		//Browse all existence floors
 		browseFloor(mDriver);
@@ -157,6 +157,6 @@ public class FloorTest
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Floor window
-		SfdcUtil.openTab(mDriver, "フロアマスタ");
+		Browser.openTab(mDriver, "フロアマスタ");
 	}
 }

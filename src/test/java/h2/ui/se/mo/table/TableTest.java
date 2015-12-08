@@ -23,7 +23,6 @@ import h2.ui.se.mo.util.Browser;
 import h2.ui.se.mo.util.PosCheckUtil;
 import h2.ui.se.mo.util.PosOrderHistoryUtil;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.SfdcUtil;
 import h2.ui.se.mo.util.TableUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
@@ -72,14 +71,14 @@ public class TableTest {
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
 		Browser.newHandle(mDriver);
 		
 		//Add new Table
 		Table lTable = new Table("T04", mFloor.getName(), false, false, true);
-		SfdcUtil.addTable(mDriver, lTable);
+		TableUtil.addTable(mDriver, lTable);
 		
 		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
@@ -115,7 +114,7 @@ public class TableTest {
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
 		Browser.newHandle(mDriver);
@@ -126,7 +125,7 @@ public class TableTest {
 		List<Table> lTableList = new ArrayList<Table>();
 		for (int i = 1; i < 4; i++)
 		{
-			SfdcUtil.addTable(mDriver, new Table("T-"+i, mFloor.getName(), false, false, true));
+			TableUtil.addTable(mDriver, new Table("T-"+i, mFloor.getName(), false, false, true));
 			Thread.sleep(1000);
 			mDriver.findElement(By.name("save_new")).click();
 			Thread.sleep(1000);
@@ -147,7 +146,7 @@ public class TableTest {
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
 		PosUtil.browse(mDriver);
@@ -188,7 +187,7 @@ public class TableTest {
 		Browser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
 		PosUtil.browse(mDriver);
@@ -222,7 +221,7 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
 		PosUtil.browse(mDriver);
@@ -264,7 +263,7 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "テーブルマスタ");
+		Browser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
 		PosUtil.browse(mDriver);
@@ -397,10 +396,10 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "会計");
+		Browser.openTab(mDriver, "会計");
 		
-		SfdcUtil.search(mDriver, "会計", lRdmCheck.substring(0, 10));
-		SfdcUtil.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		Browser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		Browser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
 		PosUtil.screenshot(mDriver, "F142T1421_Salesforce.png");
 	}
 	
@@ -436,10 +435,10 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		SfdcUtil.openTab(mDriver, "会計");
+		Browser.openTab(mDriver, "会計");
 		
-		SfdcUtil.search(mDriver, "会計", lRdmCheck.substring(0, 10));
-		SfdcUtil.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		Browser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		Browser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
 		PosUtil.screenshot(mDriver, "F143T1413_Salesforce.png");
 	}
 	
@@ -451,9 +450,9 @@ public class TableTest {
 	 */
 	private void pickTable(String iTableName) throws InterruptedException 
 	{
-		SfdcUtil.search(mDriver, "テーブルマスタ", iTableName);
+		Browser.search(mDriver, "テーブルマスタ", iTableName);
 		//SfdcUtil.editSearchResult(mDriver);
-		SfdcUtil.openRecord(mDriver, iTableName);
+		Browser.openRecord(mDriver, iTableName);
 	}
 
 	/**

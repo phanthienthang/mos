@@ -102,7 +102,7 @@ public class PosBrowser
 	public static void newHandle(WebDriver iDriver)
 	{
 		try {
-			WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
+			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
 			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.name("new")));
 			iDriver.findElement(By.name("new")).click();
 		} catch (ElementNotVisibleException e) {
@@ -117,7 +117,7 @@ public class PosBrowser
 	public static void kontinue(WebDriver iDriver) {
 		
 		try {
-			WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
+			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
 			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Continue']")));
 			iDriver.findElement(By.xpath("//input[@value='Continue']")).click();
 		} catch (ElementNotVisibleException e) {
@@ -130,7 +130,7 @@ public class PosBrowser
 	 */
 	public static void saveNew(WebDriver iDriver) {
 		try {
-			WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
+			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
 			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.name("save_new")));
 			iDriver.findElement(By.name("save_new")).click();
 		} catch (ElementNotVisibleException e) {
@@ -143,7 +143,7 @@ public class PosBrowser
 	 */
 	public static void cancel(WebDriver iDriver) {
 		try {
-			WebDriverWait lDriverWait = new WebDriverWait(iDriver,10);
+			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
 			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.name("cancel")));
 			iDriver.findElement(By.name("cancel")).click();
 		} catch (ElementNotVisibleException e) {

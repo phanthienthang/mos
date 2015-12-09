@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
 
 import h2.ui.se.mo.util.PosUtil.BY;
 
-public class PosOrderHistoryUtil {
+public class PosOrderHistory {
 	//Format date DateTimeFormatter.
 	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	

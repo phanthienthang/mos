@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import h2.ui.se.mo.util.PosUtil.BY;
 
-public class PosServiceUtil
+public class PosService
 {
 	public static void setService(WebDriver iDriver, String iService)
 	{

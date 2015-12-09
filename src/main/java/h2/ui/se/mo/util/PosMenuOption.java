@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 import h2.ui.se.mo.util.PosUtil.BY;
 
-public class PosMenuOptionUtil 
+public class PosMenuOption 
 {
 	
 	/**

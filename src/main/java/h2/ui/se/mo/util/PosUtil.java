@@ -183,12 +183,12 @@ public class PosUtil
 	
 	public static void loginInputHandle(WebDriver iDriver)
 	{
-		if (PosCheck.isInputable(iDriver, "username")) 
+		if (PosValidator.isInputable(iDriver, "username")) 
 		{
 			iDriver.findElement(By.id("username")).sendKeys(PosConfig.getConfig(PosConstant.MO_LOGIN_USER));
 		}
 		
-		if (PosCheck.isInputable(iDriver, "password")) 
+		if (PosValidator.isInputable(iDriver, "password")) 
 		{
 			iDriver.findElement(By.id("password")).sendKeys(PosConfig.getConfig(PosConstant.MO_LOGIN_PASSWORD));
 			iDriver.findElement(By.id("password")).sendKeys(Keys.ENTER);
@@ -540,7 +540,7 @@ public class PosUtil
 	
 	private static void waitClickId(WebDriver iDriver, String iId)
 	{
-		if (!PosCheck.isExistID(iDriver, iId))
+		if (!PosValidator.isExistID(iDriver, iId))
 		{
 			waitClickId(iDriver, iId);
 		}
@@ -550,7 +550,7 @@ public class PosUtil
 	
 	private static void waitClickXPath(WebDriver iDriver, String iXPath)
 	{
-		if (!PosCheck.isExistXPath(iDriver, iXPath)) {
+		if (!PosValidator.isExistXPath(iDriver, iXPath)) {
 			waitClickXPath(iDriver, iXPath);
 		}
 		
@@ -559,7 +559,7 @@ public class PosUtil
 	
 	private static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
 	{
-		if (!PosCheck.isExistCssSelector(iDriver, iCssSelector)) 
+		if (!PosValidator.isExistCssSelector(iDriver, iCssSelector)) 
 		{
 			waitClickCssSelector(iDriver, iCssSelector);
 		}
@@ -570,7 +570,7 @@ public class PosUtil
 	
 	private static void waitClickName(WebDriver iDriver, String iName) 
 	{
-		if (!PosCheck.isExistName(iDriver, iName)) {
+		if (!PosValidator.isExistName(iDriver, iName)) {
 			waitClickName(iDriver, iName);
 		}
 		
@@ -579,7 +579,7 @@ public class PosUtil
 	
 	private static void waitClickLink(WebDriver iDriver, String iLink) 
 	{
-		if (!PosCheck.isExistLink(iDriver, iLink)) {
+		if (!PosValidator.isExistLink(iDriver, iLink)) {
 			waitClickLink(iDriver, iLink);
 		}
 		

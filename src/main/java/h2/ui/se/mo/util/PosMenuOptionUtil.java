@@ -27,7 +27,7 @@ public class PosMenuOptionUtil
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public static Pattern addOption(WebDriver iDriver) throws InterruptedException
+	public static PosPattern addOption(WebDriver iDriver) throws InterruptedException
 	{
 		Thread.sleep(5000);
 		
@@ -43,7 +43,7 @@ public class PosMenuOptionUtil
 		}
 		
 		List<WebElement> lWebElements = iDriver.findElements(By.cssSelector("div[ng-repeat='pattern in order.patterns']"));
-		return new Pattern(lWebElements.get(lWebElements.size()-1));
+		return new PosPattern(lWebElements.get(lWebElements.size()-1));
 	}
 	
 	/**

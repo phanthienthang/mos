@@ -12,7 +12,7 @@ import h2.ui.se.mo.floor.Floor;
  * @author thienthang
  *
  */
-public class FloorUtil {
+public class PosFloor {
 	
 	public static void addFloor(WebDriver iDriver, Floor iFloor)
 	{

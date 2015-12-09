@@ -52,16 +52,8 @@ public class PosUtil
 	public static WebDriver init() throws InterruptedException 
 	{
 		
-		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
-
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--lang=ja");
-		options.addExtensions(new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
-				// options.setBinary(new
-				// File("E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe"));
-
 		// For use with ChromeDriver:
-		WebDriver driver = new ChromeDriver(options);
+		WebDriver driver = new ChromeDriver(initOption());
 		
 		//driver.manage().window().maximize();
 		driver.get("chrome://apps/");
@@ -77,32 +69,33 @@ public class PosUtil
 			}
 		}
 		
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.get(driver.getCurrentUrl());
 		
 		return login(driver);
 	}
 	
-	public static WebDriver initLocal() throws InterruptedException 
+	public static ChromeOptions initOption ()
 	{
-		
-		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
+		System.setProperty(PosConstant.WEBDRIVER_CHROME_DRIVER, PosConfig.getConfig(PosConstant.WEBDRIVER_CHROME_DRIVER));
 
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--lang=ja");
 		
-		options.addExtensions(new File(MOConfig.getConfig(MOConstant.MO_CHROME_EXTENSION)));
-				// options.setBinary(new
-				// File("E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe"));
-
+		options.addExtensions(new File(PosConfig.getConfig(PosConstant.MO_CHROME_EXTENSION)));
+		
+		return options;
+	}
+	
+	public static WebDriver initLocal() throws InterruptedException 
+	{
 		// For use with ChromeDriver:
-		WebDriver driver = new ChromeDriver(options);
+		WebDriver driver = new ChromeDriver(initOption());
 		
 		//driver.manage().window().maximize();
 		driver.get("http://localhost:9000");
 
-		
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.get(driver.getCurrentUrl());
 		
 		return login(driver);
@@ -196,14 +189,14 @@ public class PosUtil
 	
 	public static void loginInputHandle(WebDriver iDriver)
 	{
-		if (CheckUtil.checkInputable(iDriver, "username")) 
+		if (PosCheck.isInputable(iDriver, "username")) 
 		{
-			iDriver.findElement(By.id("username")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_USER));
+			iDriver.findElement(By.id("username")).sendKeys(PosConfig.getConfig(PosConstant.MO_LOGIN_USER));
 		}
 		
-		if (CheckUtil.checkInputable(iDriver, "password")) 
+		if (PosCheck.isInputable(iDriver, "password")) 
 		{
-			iDriver.findElement(By.id("password")).sendKeys(MOConfig.getConfig(MOConstant.MO_LOGIN_PASSWORD));
+			iDriver.findElement(By.id("password")).sendKeys(PosConfig.getConfig(PosConstant.MO_LOGIN_PASSWORD));
 			iDriver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 			
 		}
@@ -214,7 +207,7 @@ public class PosUtil
 	
 	public static WebDriver initChromeDriver() 
 	{
-		System.setProperty(MOConstant.WEBDRIVER_CHROME_DRIVER, MOConfig.getConfig(MOConstant.WEBDRIVER_CHROME_DRIVER));
+		System.setProperty(PosConstant.WEBDRIVER_CHROME_DRIVER, PosConfig.getConfig(PosConstant.WEBDRIVER_CHROME_DRIVER));
 		WebDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		return driver;
@@ -279,7 +272,8 @@ public class PosUtil
 		
 	}
 	
-	private static Map<String, WebElement> parseMenu(WebDriver iDriver) {
+	private static Map<String, WebElement> parseMenu(WebDriver iDriver) 
+	{
 		Map<String, WebElement> lSettings = new HashMap<String, WebElement>();
 		WebElement lSettingPanel = iDriver.findElement(By.id("side-menu-items"));
 		if (lSettingPanel != null) {
@@ -298,33 +292,17 @@ public class PosUtil
 		
 	}
 	
+	/**
+	 * Wait at least 30 seconds for element and click 
+	 * 
+	 * @param iDriver
+	 * @param iElement
+	 */
 	public static void waitnClick(WebDriver iDriver, WebElement iElement) 
 	{
 		WebDriverWait lWait = new WebDriverWait(iDriver, 30);
 		lWait.until(ExpectedConditions.elementToBeClickable(iElement));
 		iElement.click();
-	}
-	
-	
-	/**
-	 * Parse element
-	 * 
-	 * @param iDriver
-	 * @param iTag
-	 * @return
-	 */
-	private static Map<String, WebElement> parseElement(WebDriver iDriver, String iTag)
-	{
-		
-		Map<String, WebElement> lSettings = new HashMap<String, WebElement>();
-		List<WebElement> lEleList = iDriver.findElements(By.tagName(iTag));
-		for(WebElement lEle: lEleList)
-		{
-			if (lEle.getText() != null){
-				lSettings.put(lEle.getText(), lEle);
-			}
-		}
-		return lSettings;
 	}
 	
 	/**
@@ -500,21 +478,11 @@ public class PosUtil
 		if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
 			//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
 			List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-			int lRandomFloor = random(lElems.size())+1;
+			int lRandomFloor = Util.random(lElems.size())+1;
 			
 			//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
 			lElems.get(lRandomFloor).click();
 		}
-	}
-	
-	/**
-	 * Get random number with specified limited number except 1
-	 * @param iLimit
-	 * @return
-	 */
-	public static int random(int iLimit)
-	{
-		return new Random().nextInt(iLimit);
 	}
 	
 	/**
@@ -574,224 +542,11 @@ public class PosUtil
 		
 	}
 
-	public static WebElement pickOrderTable(WebDriver iDriver, String iTable)
-	{
-		System.out.println("Call method pickOrderTable(WebDriver iDriver, String iTable) in PosUtil.java");
-		Map<String, List<WebElement>> lFloorMap = TableUtil.parseAElement(iDriver);
-		System.out.println("Holding table : "+ iTable);
-		if (lFloorMap.size() != 0) {
-			for (String lFloor: lFloorMap.keySet()) {
-				List<WebElement> lTableElems = lFloorMap.get(lFloor);
-				for (WebElement lElem: lTableElems)
-				{
-					//System.out.println("Element Table : "+ lElem.getText());
-					if (lElem.getText().indexOf(iTable) != -1)
-					{
-						return lElem;
-					}
-				}
-			}
-			return null;
-		}
-		else {
-			return pickOrderTable(iDriver, iTable);
-		}
-		
-	}
 	
-	public static WebElement pickRdmTable(WebDriver iDriver) 
-	{
-		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
-		Map<String, List<WebElement>> lFloorMap = TableUtil.parseAElement(iDriver);
-		if (lFloorMap.size() != 0) {
-			int lRdmFloor = random(lFloorMap.keySet().size());
-			//int lCount = 0; 
-			List<String> lFloorList = new ArrayList<String>();
-			
-			for (String lFloor: lFloorMap.keySet()) {
-				lFloorList.add(lFloor);
-			}
-			
-			List<WebElement> lTableElems = lFloorMap.get(lFloorList.get(lRdmFloor));
-			
-			return  lTableElems.get(random(lTableElems.size()));
-		}
-		else {
-			return pickRdmTable(iDriver);
-		}
-	}
-	
-	public static WebElement pickRdmUsingTable(WebDriver iDriver) 
-	{
-		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
-		Map<String, List<WebElement>> lFloorMap = TableUtil.parseUsingTable(iDriver);
-		if (lFloorMap.size() != 0) {
-			int lRdmFloor = random(lFloorMap.keySet().size());
-			//int lCount = 0; 
-			List<String> lFloorList = new ArrayList<String>();
-			
-			for (String lFloor: lFloorMap.keySet()) {
-				lFloorList.add(lFloor);
-			}
-			
-			List<WebElement> lTableElems = lFloorMap.get(lFloorList.get(lRdmFloor));
-			
-			return  lTableElems.get(0);
-		}
-		else {
-			return pickRdmUsingTable(iDriver);
-		}
-	}
-	
-	/**
-	 * Random pick category
-	 * @param iDriver
-	 * @throws InterruptedException 
-	 */
-	public static void handleRdmCategory(WebDriver iDriver)
-	{
-		List<WebElement> lCategoryList = findElements(iDriver, BY.CSS, "li[ng-repeat='category in orderData.categories']");
-		if (lCategoryList.size() != 0) {
-			WebElement lCategoryRdm = lCategoryList.get(random(lCategoryList.size()));
-			if (lCategoryRdm != null) {
-				try 
-				{
-					lCategoryRdm.click();
-				} 
-				catch (WebDriverException e)
-				{
-					handleRdmCategory(iDriver);
-				}
-			}
-			else {
-				lCategoryList.get(0).click();
-			}
-		} else {
-			handleRdmCategory(iDriver);
-		}
-		
-	}
-	
-	/**
-	 * Random pick menu
-	 * @param iDriver
-	 * @throws InterruptedException 
-	 */
-	public static void handleRdmMenu(WebDriver iDriver)
-	{
-		List<WebElement> lMenuList = findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
-		if (lMenuList.size() != 0) {
-			WebElement lMenuRdm = lMenuList.get(random(lMenuList.size()));
-			if (lMenuRdm != null) {
-				
-				try 
-				{
-					lMenuRdm.click();
-				} 
-				catch (WebDriverException e)
-				{
-					handleRdmMenu(iDriver);
-				}
-				
-			}
-			else {
-				lMenuList.get(0).click();
-			}
-			lMenuRdm.click();
-		}
-		else {
-			handleRdmMenu(iDriver);
-		}
-		
-	}
-	
-	/**
-	 * Random pick menu
-	 * @param iDriver
-	 * @throws InterruptedException 
-	 */
-	public static void handleRdmMenu(WebDriver iDriver, int iQuantity)
-	{
-		List<WebElement> lMenuList = findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
-		if (lMenuList.size() != 0) {
-			WebElement lMenuRdm = lMenuList.get(random(lMenuList.size()));
-			if (lMenuRdm != null) {
-				
-				try 
-				{
-					for (int i = 0; i< iQuantity; i++) {
-						lMenuRdm.click();
-					}
-					
-				} 
-				catch (WebDriverException e)
-				{
-					handleRdmMenu(iDriver);
-				}
-				
-			}
-			else {
-				lMenuList.get(0).click();
-			}
-		}
-		else {
-			handleRdmMenu(iDriver);
-		}
-		
-	}
-	
-	private static void handleRdmMale(WebDriver iDriver)
-	{
-		handleRdmSex(iDriver, "male");
-	}
-	
-	private static void handleRdmFemale(WebDriver iDriver)
-	{
-		handleRdmSex(iDriver, "female");
-	}
-	
-	private static void handleRdmSex(WebDriver iDriver, String iSex)
-	{
-		System.out.println("Enter sex option: "+ iSex);
-		WebElement lSex = iDriver.findElement(By.id(iSex));
-		if (lSex != null) {
-			List<WebElement> lOptionList = lSex.findElements(By.xpath(".//option"));
-			int lRdmNo = random(lOptionList.size());
-			try {
-				lOptionList.get(lRdmNo).click();
-			}
-			catch (ElementNotVisibleException e) {
-				handleRdmSex(iDriver, iSex);
-			}
-		}
-		else {
-			handleRdmSex(iDriver, iSex);
-		}
-		
-	}
-	
-	public static void handleRdmComment(WebDriver iDriver)
-	{
-		
-	}
-	
-	public static void handleComment(WebDriver iDriver, String iComment)
-	{
-		//findnClick(iDriver, BY.ID, "comment");
-		iDriver.findElement(By.id("comment")).sendKeys(iComment);
-	}
-	
-	public static void sendOrder(WebDriver iDriver)
-	{
-		System.out.println("Call method sendOrder(Webdriver iDriver) ");
-		findnClick(iDriver, BY.LINKTEXT, "送信");
-		
-	}
 	
 	private static void waitClickId(WebDriver iDriver, String iId)
 	{
-		System.out.println("Call method waitClickId(WebDriver iDriver, String iId). With ID: " + iId);
-		if (!CheckUtil.checkExistID(iDriver, iId))
+		if (!PosCheck.isExistID(iDriver, iId))
 		{
 			waitClickId(iDriver, iId);
 		}
@@ -801,7 +556,7 @@ public class PosUtil
 	
 	private static void waitClickXPath(WebDriver iDriver, String iXPath)
 	{
-		if (!CheckUtil.checkExistXPath(iDriver, iXPath)) {
+		if (!PosCheck.isExistXPath(iDriver, iXPath)) {
 			waitClickXPath(iDriver, iXPath);
 		}
 		
@@ -810,7 +565,7 @@ public class PosUtil
 	
 	private static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
 	{
-		if (!CheckUtil.checkExistCssSelector(iDriver, iCssSelector)) 
+		if (!PosCheck.isExistCssSelector(iDriver, iCssSelector)) 
 		{
 			waitClickCssSelector(iDriver, iCssSelector);
 		}
@@ -821,7 +576,7 @@ public class PosUtil
 	
 	private static void waitClickName(WebDriver iDriver, String iName) 
 	{
-		if (!CheckUtil.checkExistName(iDriver, iName)) {
+		if (!PosCheck.isExistName(iDriver, iName)) {
 			waitClickName(iDriver, iName);
 		}
 		
@@ -830,7 +585,7 @@ public class PosUtil
 	
 	private static void waitClickLink(WebDriver iDriver, String iLink) 
 	{
-		if (!CheckUtil.checkExistLink(iDriver, iLink)) {
+		if (!PosCheck.isExistLink(iDriver, iLink)) {
 			waitClickLink(iDriver, iLink);
 		}
 		
@@ -842,12 +597,12 @@ public class PosUtil
 	 * Find and click
 	 * 
 	 * @param iDriver
-	 * @param iFilter
+	 * @param iBy
 	 * @param iContent
 	 */
-	public static void findnClick(WebDriver iDriver, BY iFilter, String iContent) 
+	public static void findnClick(WebDriver iDriver, BY iBy, String iContent) 
 	{
-		switch (iFilter) {
+		switch (iBy) {
 		case ID: 
 			waitClickId(iDriver, iContent);
 			break;
@@ -945,111 +700,12 @@ public class PosUtil
 		return isElementsExist(iDriver, iBY, iContent);
 	}
 
-	private static void handleServiceCharge(WebDriver iDriver, int iServiceCharge)
-	{
-		iDriver.findElement(By.id("service_rate")).sendKeys(String.valueOf(iServiceCharge));
-	}
-
-	private static void handleDiscountRate(WebDriver iDriver, int iRate) 
-	{
-		iDriver.findElement(By.id("discount_rate")).sendKeys(String.valueOf(iRate));
-	}
-
-	public static void handleDiscountPrice(WebDriver iDriver, int iPrice)
-	{
-		iDriver.findElement(By.id("discount_price")).sendKeys(String.valueOf(iPrice));
-	}
-
-	public static void handleRdmComment(WebDriver iDriver, String iComment)
-	{
-		// TODO Not yet implemented
-		
-	}
-
-	public static void orderByTable(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException {
-		
-		//POS Processing
-		WebElement lTableElem = pickOrderTable(iDriver, iTable);
-		System.out.println("Order table: " + iTable);
-		handleOrder(iDriver, lTableElem, iServiceCharge, iRate, iPrice, iComment);
-	}
 	
-	private static void handleOrder(WebDriver iDriver, WebElement iTableWeb, int iServiceCharge, int iRate, int iPrice, String iComment) throws InterruptedException
-	{
-		//PosUtil.openSetting(iDriver, "注文");
-		
-		
-		iTableWeb.click();
-		//pickTable(iDriver, iTableName);
-		Thread.sleep(1000);
-		handleRdmMale(iDriver);
-		Thread.sleep(1000);
-		handleRdmFemale(iDriver);
-		Thread.sleep(1000);
-		handleServiceCharge(iDriver, iServiceCharge);
-		Thread.sleep(1000);
-		handleDiscountRate(iDriver, iRate);
-		Thread.sleep(1000);
-		handleDiscountPrice(iDriver, iPrice);
-		Thread.sleep(1000);
-		handleComment(iDriver, iComment);
-		Thread.sleep(1000);
-		
-		//Order
-		PosUtil.order(iDriver);
-		Thread.sleep(3000);
-		
-		//TODO - Implement the category check here!!!
-		handleRdmCategory(iDriver);
-		Thread.sleep(3000);
-		handleRdmMenu(iDriver);
-		Thread.sleep(3000);
-		handleConfirm(iDriver);
-		Thread.sleep(3000);
-	}
 	
-	private static void handleOrder(WebDriver iDriver, WebElement iTableWeb, int iServiceCharge, int iRate, int iPrice, String iComment, int iMenuNo, int[] iMenuQuantity)
-	{
-		//PosUtil.openSetting(iDriver, "注文");
-		iTableWeb.click();
-		//pickTable(iDriver, iTableName);
-		
-		handleRdmMale(iDriver);
-		
-		handleRdmFemale(iDriver);
-		
-		handleServiceCharge(iDriver, iServiceCharge);
-		
-		handleDiscountRate(iDriver, iRate);
-		
-		handleDiscountPrice(iDriver, iPrice);
-		
-		handleComment(iDriver, iComment);
-		
-		//Order
-		PosUtil.order(iDriver);
-		
-		//TODO - Implement the category check here!!!
-		handleRdmCategory(iDriver);
-		
-		for (int i = 0; i < iMenuNo; i++) {
-			handleRdmMenu(iDriver, iMenuQuantity[i]);
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
-		handleConfirm(iDriver);
-	}
-	
-	private static void pickTable(WebDriver iDriver, String iTableName) {
+	public static void pickTable(WebDriver iDriver, String iTableName) {
 		
 		try {
-			WebElement lTableElem = pickOrderTable(iDriver, iTableName);
+			WebElement lTableElem = PosTable.pickOrderTable(iDriver, iTableName);
 			lTableElem.click();
 		}
 		catch (WebDriverException e) {
@@ -1058,7 +714,7 @@ public class PosUtil
 		
 	}
 
-	private static void order(WebDriver iDriver) 
+	public static void order(WebDriver iDriver) 
 	{
 		try {
 			findnClick(iDriver, BY.LINKTEXT, "注文");
@@ -1069,123 +725,11 @@ public class PosUtil
 	}
 
 	/**
-	 * Random order menu
-	 * 
-	 * @param iDriver
-	 * @throws InterruptedException
-	 */
-	public static String orderRandom(WebDriver iDriver) throws InterruptedException 
-	{
-		System.out.println("Call method orderRandom(WebDriver iDriver) in PosUtil.java");
-		WebElement lRdmTable = pickRdmTable(iDriver);
-		if (lRdmTable != null) {
-			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
-			System.out.println("Random table: "+lTableName);
-			if (!isTabAvailable(lRdmTable)) 
-			{
-				orderRandom(iDriver);
-			}
-			handleOrder(iDriver, lRdmTable, 0, 0, 0, "Random Order");
-			return lTableName;
-		}
-		else {
-			return orderRandom(iDriver);
-		}
-		
-	}
-	
-	public static String orderRandom(WebDriver iDriver, int iService, int iRate, int iPrice) throws InterruptedException 
-	{
-		System.out.println("Call method orderRandom(WebDriver iDriver) in PosUtil.java");
-		WebElement lRdmTable = pickRdmTable(iDriver);
-		if (lRdmTable != null) {
-			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
-			System.out.println("Random table: "+lTableName);
-			if (!isTabAvailable(lRdmTable)) 
-			{
-				orderRandom(iDriver,iService, iRate, iPrice);
-			}
-			handleOrder(iDriver, lRdmTable, iService, iRate, iPrice, " Order randomatically");
-			return lTableName;
-		}
-		else {
-			return orderRandom(iDriver, iService, iRate, iPrice);
-		}
-		
-	}
-	
-	/**
-	 * @param iDriver
-	 * @param iRdmMenu
-	 * @return
-	 */
-	public static String orderRandom(WebDriver iDriver, int iService, int iRate, int iPrice, String iComment, int iRdmMenu, int[] iMenuQuantity) 
-	{
-		System.out.println("Call method orderRandom(WebDriver iDriver, int iService, int iRate, int iPrice, String iComment, int iRdmMenu, int[] iMenuQuantity)  in PosUtil.java");
-		WebElement lRdmTable = pickRdmTable(iDriver);
-		if (lRdmTable != null) {
-			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
-			System.out.println("Random table: "+lTableName);
-			if (!isTabAvailable(lRdmTable)) 
-			{
-				orderRandom(iDriver, iService, iRate, iPrice, iComment, iRdmMenu, iMenuQuantity);
-			} else {
-				handleOrder(iDriver, lRdmTable, iService, iRate, iPrice, iComment, iRdmMenu, iMenuQuantity);
-			}
-			return lTableName;
-		}
-		else {
-			return orderRandom(iDriver, iService, iRate, iPrice, iComment, iRdmMenu, iMenuQuantity);
-		}
-	}
-	
-	
-
-	/**
 	 * @param iDriver
 	 */
 	public static void handleConfirm(WebDriver iDriver) 
 	{
 		findnClick(iDriver, BY.LINKTEXT, "注文確認"); //ORDER CONFIRM
-	}
-
-	public static void screenshot(WebDriver iDriver, String iFileName) throws IOException 
-	{
-		// Select the target WebElement
-
-				// Take screenshot and save to file
-				File screenshot = ((TakesScreenshot) iDriver).getScreenshotAs(OutputType.FILE);
-
-				// Create instance of BufferedImage from captured screenshot
-				//BufferedImage img = ImageIO.read(screenshot);
-
-				// Get the Height and Width of WebElement
-
-				// Create Rectangle using Height and Width to get size
-				//Rectangle rect = new Rectangle(width, height);
-
-				// Get location of WebElement in a Point
-				//Point p = lElem.getLocation();
-				// This will provide X & Y co-ordinates of the WebElement
-
-				// Create an image for WebElement using its size and location
-				//BufferedImage dest = img.getSubimage(p.getX(), p.getY(), rect.width, rect.height);
-				// This will give image data specific to the WebElement
-
-				// Write back the image data into a File object
-				//ImageIO.write(dest, "png", screenshot);
-
-				// Copy the file to system ScreenshotPath
-				FileUtils.copyFile(screenshot, new File(iFileName));
-	}
-	
-	public static boolean isTabAvailable(WebElement iTab)
-	{
-		if (iTab.getAttribute("class").contains("empty")) {
-			return true;
-		}
-		
-		return false;
 	}
 
 	public static void checkOut(WebDriver iDriver, String iTable) throws InterruptedException 
@@ -1214,7 +758,7 @@ public class PosUtil
 	private static void handleOption(WebDriver iDriver, String iTable, String iOption) 
 	{
 		try {
-			WebElement lTable = pickOrderTable(iDriver, iTable);
+			WebElement lTable = PosTable.pickOrderTable(iDriver, iTable);
 			
 			Actions lBuilder = new Actions(iDriver);
 			lBuilder.clickAndHold(lTable).build().perform();
@@ -1236,42 +780,6 @@ public class PosUtil
 		}
 	}
 	
-	public static void editRdmOrder(WebDriver iDriver, int iServiceCharge, int iRate, int iPrice, String iComment)
-	{
-		//PosUtil.openSetting(iDriver, "注文");
-		
-		//lTableList.get(lTableRdm).click();
-		
-		handleRdmMale(iDriver);
-		
-		handleRdmFemale(iDriver);
-		
-		handleServiceCharge(iDriver, iServiceCharge);
-		
-		handleDiscountRate(iDriver, iRate);
-		
-		handleDiscountPrice(iDriver, iPrice);
-		
-		handleComment(iDriver, iComment);
-		
-		done(iDriver);
-		//Order
-		//PosUtil.order(iDriver);
-		
-		//TODO - Implement the category check here!!!
-		//handleRdmCategory(iDriver);
-		
-		//handleRdmMenu(iDriver);
-		//handleConfirm(iDriver);
-		
-		
-	}
-	
-	private static void done(WebDriver iDriver) {
-		
-		findnClick(iDriver, BY.LINKTEXT, "更新");
-	}
-
 	public static void viewTabHistory(WebDriver iDriver, String iTable) 
 	{
 		handleOption(iDriver, iTable, "注文履歴");

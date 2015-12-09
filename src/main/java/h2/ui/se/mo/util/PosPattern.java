@@ -5,12 +5,12 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class Pattern 
+public class PosPattern 
 {
 	
 	private WebElement mWebElement;
 	
-	public Pattern(WebElement iWebElement)
+	public PosPattern(WebElement iWebElement)
 	{
 		mWebElement = iWebElement;
 	}

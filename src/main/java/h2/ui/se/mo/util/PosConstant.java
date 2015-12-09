@@ -1,6 +1,6 @@
 package h2.ui.se.mo.util;
 
-public class MOConstant {
+public class PosConstant {
 	
 	public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
 	public static final String MO_CHROME_EXTENSION = "mo.chrome.extension";

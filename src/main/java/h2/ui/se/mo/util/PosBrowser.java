@@ -21,37 +21,8 @@ import h2.ui.se.mo.util.PosUtil.BY;
  * @author thienthang
  *
  */
-public class Browser 
+public class PosBrowser 
 {
-	
-	/**
-	 * @return
-	 */
-	public static WebDriver getFirefox()
-	{
-		WebDriver driver = new FirefoxDriver();
-		return driver;
-	}
-	
-	/**
-	 * @return
-	 */
-	public static WebDriver getChrome() 
-	{
-		System.setProperty("webdriver.chrome.driver", "E:\\WORK\\H2\\MyOrder\\Selenium\\chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
-		return driver;
-	}
-	
-	/**
-	 * @return
-	 */
-	public static WebDriver getIE()
-	{
-		System.setProperty("webdriver.chrome.driver", "E:\\WORK\\H2\\MyOrder\\Selenium\\IEDriverServer.exe");
-		WebDriver driver = new ChromeDriver();
-		return driver;
-	}
 	
 	/**
 	 * @param iDriver
@@ -317,7 +288,7 @@ public class Browser
 		
 		//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
 		List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-		int lRandom = PosUtil.random(lElems.size());
+		int lRandom = Util.random(lElems.size());
 		
 		//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
 		lElems.get(lRandom).click();

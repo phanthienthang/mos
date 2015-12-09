@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.NumpadUtil.Card;
+import h2.ui.se.mo.util.PosNumPad.Card;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 /**
@@ -46,7 +46,7 @@ public class PosCheckUtil
 		int lTotal = Integer.valueOf(PosCheckUtil.handleGetAmount(iDriver)) + Integer.valueOf(PosCheckUtil.handleTaxAmount(iDriver));
 		lTotal = iExtra + lTotal;
 		//System.out.println("Total Amount: "+CheckOutPOSUtil.handleGetAmount(iDriver)+ " Tax:" + Integer.valueOf(CheckOutPOSUtil.handleTaxAmount(iDriver)));
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTotal));
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal));
 	}
 	
 	public static void handlePayByCard(WebDriver iDriver)
@@ -200,10 +200,10 @@ public class PosCheckUtil
 			lHalf = Math.round(lHalf);
 		}
 		//Thread.sleep(5000);
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lHalf));
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lHalf));
 		
 		handlePayment(iDriver, "クレジットカード");
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lHalf), Card.Amex);
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lHalf), Card.Amex);
 		
 	}
 	
@@ -286,13 +286,13 @@ public class PosCheckUtil
 	{
 		handlePayByCard(iDriver);
 		int lTotal = Integer.valueOf(PosCheckUtil.handleGetAmount(iDriver)) + Integer.valueOf(PosCheckUtil.handleTaxAmount(iDriver));
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTotal), Card.Amex);
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal), Card.Amex);
 	}
 	
 	public static void payByGift(WebDriver iDriver) {
 		handlePayByGifs(iDriver);
 		int lTotal = Integer.valueOf(PosCheckUtil.handleGetAmount(iDriver)) + Integer.valueOf(PosCheckUtil.handleTaxAmount(iDriver));
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTotal));
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal));
 		
 	}
 
@@ -306,13 +306,13 @@ public class PosCheckUtil
 			lTriple = Math.round(lTriple);
 		}
 		//Thread.sleep(5000);
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTriple));
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTriple));
 		
 		handlePayByCard(iDriver);
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTriple), Card.Amex);
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTriple), Card.Amex);
 		
 		handlePayByGifs(iDriver);
-		NumpadUtil.handleInputNo(iDriver, String.valueOf(lTriple));
+		PosNumPad.handleInputNo(iDriver, String.valueOf(lTriple));
 		
 	}
 	

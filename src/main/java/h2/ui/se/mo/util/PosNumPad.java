@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import h2.ui.se.mo.util.PosUtil.BY;
 
-public class NumpadUtil 
+public class PosNumPad 
 {
 	static WebElement mEnter;
 	static WebElement mClose;

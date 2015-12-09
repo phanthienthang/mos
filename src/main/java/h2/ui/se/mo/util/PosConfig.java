@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class MOConfig {
+public class PosConfig {
 
 	/**
 	 * All non-UI messages go here. UI Labels go in Labels.
@@ -16,7 +16,7 @@ public class MOConfig {
 
 	private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private MOConfig() { }
+	private PosConfig() { }
 	
 	public static String getConfig(String key) 
 	{

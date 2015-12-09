@@ -58,7 +58,7 @@ public class PosOrderHistoryUtil {
 	public static String selectRdmCheck(WebDriver iDriver)
 	{
 		List<WebElement> lCheckList = PosUtil.findElements(iDriver, BY.CSS, "li[ng-repeat='check in history.checks']");
-		WebElement lCheck = lCheckList.get(PosUtil.random(lCheckList.size()));
+		WebElement lCheck = lCheckList.get(Util.random(lCheckList.size()));
 		lCheck.click();
 		return lCheck.getText();
 	}

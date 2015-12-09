@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -478,7 +479,7 @@ public class PosUtil
 		if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
 			//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
 			List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-			int lRandomFloor = Util.random(lElems.size())+1;
+			int lRandomFloor = PosUtil.random(lElems.size())+1;
 			
 			//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
 			lElems.get(lRandomFloor).click();
@@ -854,6 +855,64 @@ public class PosUtil
 		WebElement lMenu = pickMenu(iDriver, iMenu);
 		Actions lBuilder = new Actions(iDriver);
 		lBuilder.clickAndHold(lMenu).build().perform();
+	}
+	
+	
+	public static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
+	public static final Random mRandom = new Random();
+	public static final Set<String> mIdentifier = new HashSet<String>();
+	
+	/**
+	 * Get random number with specified limited number
+	 * @param iLimit
+	 * @return
+	 */
+	public static int random(int iLimit)
+	{
+		return new Random().nextInt(iLimit);
+	}
+	
+	public static void screenshot(WebDriver iDriver, String iFileName) throws IOException 
+	{
+		// Select the target WebElement
+
+				// Take screenshot and save to file
+				File screenshot = ((TakesScreenshot) iDriver).getScreenshotAs(OutputType.FILE);
+
+				// Create instance of BufferedImage from captured screenshot
+				//BufferedImage img = ImageIO.read(screenshot);
+
+				// Get the Height and Width of WebElement
+
+				// Create Rectangle using Height and Width to get size
+				//Rectangle rect = new Rectangle(width, height);
+
+				// Get location of WebElement in a Point
+				//Point p = lElem.getLocation();
+				// This will provide X & Y co-ordinates of the WebElement
+
+				// Create an image for WebElement using its size and location
+				//BufferedImage dest = img.getSubimage(p.getX(), p.getY(), rect.width, rect.height);
+				// This will give image data specific to the WebElement
+
+				// Write back the image data into a File object
+				//ImageIO.write(dest, "png", screenshot);
+
+				// Copy the file to system ScreenshotPath
+				FileUtils.copyFile(screenshot, new File(iFileName));
+	}
+	
+	public String getRandomName()
+	{
+		StringBuilder builder = new StringBuilder();
+		 while(builder.toString().length() == 0) {
+		        int length = mRandom.nextInt(5)+5;
+		        for(int i = 0; i < length; i++)
+		            builder.append(CHARACTERS.charAt(mRandom.nextInt(CHARACTERS.length())));
+		        if(mIdentifier.contains(builder.toString())) 
+		            builder = new StringBuilder();
+		    }
+		    return builder.toString();
 	}
 
 }

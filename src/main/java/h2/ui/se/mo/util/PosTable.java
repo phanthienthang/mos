@@ -196,7 +196,7 @@ public class PosTable
 		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
 		Map<String, List<WebElement>> lFloorMap = PosTable.parseAElement(iDriver);
 		if (lFloorMap.size() != 0) {
-			int lRdmFloor = Util.random(lFloorMap.keySet().size());
+			int lRdmFloor = PosUtil.random(lFloorMap.keySet().size());
 			//int lCount = 0; 
 			List<String> lFloorList = new ArrayList<String>();
 			
@@ -206,7 +206,7 @@ public class PosTable
 			
 			List<WebElement> lTableElems = lFloorMap.get(lFloorList.get(lRdmFloor));
 			
-			return  lTableElems.get(Util.random(lTableElems.size()));
+			return  lTableElems.get(PosUtil.random(lTableElems.size()));
 		}
 		else {
 			return pickRdmTable(iDriver);
@@ -218,7 +218,7 @@ public class PosTable
 		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
 		Map<String, List<WebElement>> lFloorMap = PosTable.parseUsingTable(iDriver);
 		if (lFloorMap.size() != 0) {
-			int lRdmFloor = Util.random(lFloorMap.keySet().size());
+			int lRdmFloor = PosUtil.random(lFloorMap.keySet().size());
 			//int lCount = 0; 
 			List<String> lFloorList = new ArrayList<String>();
 			

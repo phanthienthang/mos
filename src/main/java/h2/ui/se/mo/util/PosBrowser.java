@@ -288,7 +288,7 @@ public class PosBrowser
 		
 		//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
 		List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-		int lRandom = Util.random(lElems.size());
+		int lRandom = PosUtil.random(lElems.size());
 		
 		//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
 		lElems.get(lRandom).click();

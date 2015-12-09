@@ -305,7 +305,7 @@ public class PosOrder {
 	{
 		List<WebElement> lCategoryList = PosUtil.findElements(iDriver, BY.CSS, "li[ng-repeat='category in orderData.categories']");
 		if (lCategoryList.size() != 0) {
-			WebElement lCategoryRdm = lCategoryList.get(Util.random(lCategoryList.size()));
+			WebElement lCategoryRdm = lCategoryList.get(PosUtil.random(lCategoryList.size()));
 			if (lCategoryRdm != null) {
 				try 
 				{
@@ -334,7 +334,7 @@ public class PosOrder {
 	{
 		List<WebElement> lMenuList = PosUtil.findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
 		if (lMenuList.size() != 0) {
-			WebElement lMenuRdm = lMenuList.get(Util.random(lMenuList.size()));
+			WebElement lMenuRdm = lMenuList.get(PosUtil.random(lMenuList.size()));
 			if (lMenuRdm != null) {
 				
 				try 
@@ -367,7 +367,7 @@ public class PosOrder {
 	{
 		List<WebElement> lMenuList = PosUtil.findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
 		if (lMenuList.size() != 0) {
-			WebElement lMenuRdm = lMenuList.get(Util.random(lMenuList.size()));
+			WebElement lMenuRdm = lMenuList.get(PosUtil.random(lMenuList.size()));
 			if (lMenuRdm != null) {
 				
 				try 
@@ -409,7 +409,7 @@ public class PosOrder {
 		WebElement lSex = iDriver.findElement(By.id(iSex));
 		if (lSex != null) {
 			List<WebElement> lOptionList = lSex.findElements(By.xpath(".//option"));
-			int lRdmNo = Util.random(lOptionList.size());
+			int lRdmNo = PosUtil.random(lOptionList.size());
 			try {
 				lOptionList.get(lRdmNo).click();
 			}

@@ -18,11 +18,9 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
@@ -33,13 +31,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.gargoylesoftware.htmlunit.ElementNotFoundException;
-
-import h2.ui.se.mo.util.PosUtil.BY;
 
 public class PosUtil 
 {
@@ -619,6 +612,8 @@ public class PosUtil
 		case LINKTEXT:
 			waitClickLink(iDriver, iContent);
 			break;
+		default:
+			break;
 		}
 		
 	}
@@ -653,6 +648,8 @@ public class PosUtil
 			case PARTIALLINKTEXT:
 				lElementList = iDriver.findElements(By.partialLinkText(iContent));
 				break;
+			default:
+				break;
 			}
 		}
 		
@@ -675,6 +672,8 @@ public class PosUtil
 				break;
 			case CSS:
 				lElementList = lWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(iContent)));
+				break;
+			default:
 				break;
 			}
 			

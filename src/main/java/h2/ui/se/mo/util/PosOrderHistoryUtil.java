@@ -129,39 +129,4 @@ public class PosOrderHistoryUtil {
 		
 		return null;
 	}
-	
-	//Get yesterday.
-	private static void getPreDay()
-	{
-		LocalDate lToday = LocalDate.now();
-		LocalDate lPreviousDate = LocalDate.of(lToday.getYear(), lToday.getMonth(), lToday.getDayOfMonth()-1);
-	}
-	
-	//Get tomorrow
-	private static void getNextDay() 
-	{
-		LocalDate lToday = LocalDate.now();
-		LocalDate lPreviousDate = LocalDate.of(lToday.getYear(), lToday.getMonth(), lToday.getDayOfMonth()+1);
-	}
-	
-	//Get next month from the current month on POS screen
-	private static void getNextMonth(WebDriver iDriver)
-	{
-		WebElement lNext = iDriver.findElement(By.xpath("//a[@hm-tap='addMonth(1)'"));
-		lNext.click();
-	}
-	
-	//Get previous month from the current month on POS screen
-	private static void getPreMonth(WebDriver iDriver)
-	{
-		WebElement lPrev = iDriver.findElement(By.xpath("//a[@hm-tap='addMonth(-1)'"));
-		lPrev.click();
-	}
-	
-	private static void handlePickMonth(){}
-	
-	private static void handleSearch(){}
-	
-	private static void handleFilter(){}
-	
 }

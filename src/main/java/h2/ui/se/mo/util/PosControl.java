@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import h2.ui.se.mo.util.PosUtil.BY;
 
-public class PosControlUtil {
+public class PosControl {
 	
 	//Select timeslot
 	private static void setTimeSlot(WebDriver iDriver, String iTimeSlot)

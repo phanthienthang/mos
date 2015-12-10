@@ -126,6 +126,20 @@ public class PosBrowser
 	}
 	
 	/**
+	 * Browse the records (data) of specified Salesforce object
+	 * Example: 
+	 *  When tab table is opened, the automation will click button Go for browse the data inside this tab.
+	 * @param iDriver
+	 * @throws InterruptedException
+	 */
+	public static void go(WebDriver iDriver) throws InterruptedException
+	{
+		//WebDriverWait lWait = new WebDriverWait(iDriver, 10);
+		//lWait.until(ExpectedConditions.elementToBeClickable(By.id("go")));
+		PosUtil.findnClick(iDriver, BY.NAME, "go");
+	}
+	
+	/**
 	 * @param iDriver
 	 */
 	public static void saveNew(WebDriver iDriver) {

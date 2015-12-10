@@ -137,9 +137,10 @@ public class PosUtil
 		}
 	}
 	
-	private static WebDriver isLoaded(WebDriver iDriver)
+	public static WebDriver isLoaded(WebDriver iDriver)
 	{
-		try {
+		try 
+		{
 			if (iDriver.findElement(By.id("slide-menu")).isDisplayed()) {
 				return iDriver;
 			}
@@ -453,20 +454,6 @@ public class PosUtil
 		}
 	}
 	
-	/**
-	 * Browse the records (data) of specified Salesforce object
-	 * Example: 
-	 *  When tab table is opened, the automation will click button Go for browse the data inside this tab.
-	 * @param iDriver
-	 * @throws InterruptedException
-	 */
-	public static void browse(WebDriver iDriver) throws InterruptedException
-	{
-		//WebDriverWait lWait = new WebDriverWait(iDriver, 10);
-		//lWait.until(ExpectedConditions.elementToBeClickable(By.id("go")));
-		findnClick(iDriver, BY.NAME, "go");
-	}
-	
 	public static void randomEdit(WebDriver iDriver)
 	{
 		if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
@@ -657,7 +644,6 @@ public class PosUtil
 	}
 	
 	
-	
 	private static boolean isElementsExist(WebDriver iDriver, BY iBy, String iContent) 
 	{
 		List<WebElement> lElementList = new ArrayList<WebElement>();
@@ -813,24 +799,33 @@ public class PosUtil
 		
 	}
 
+	/**
+	 * @param iDriver
+	 * @param iCategory
+	 */
 	public static void pickCategory(WebDriver iDriver, String iCategory)
 	{
 		List<WebElement> lCategoryList = findElements(iDriver, BY.CSS, "li[ng-repeat='category in orderData.categories']");
 		if (lCategoryList.size() != 0) {
 			
-			for (int i = 0; i < lCategoryList.size(); i++) {
+			for (int i = 0; i < lCategoryList.size(); i++) 
+			{
 				WebElement lCategory = lCategoryList.get(i);
-				if (lCategory.getText().contains(iCategory)) {
+				if (lCategory.getText().contains(iCategory)) 
+				{
 					lCategory.click();
 					break;
 				}
 			}
-		} else {
-			pickCategory(iDriver, iCategory);
 		}
 		
 	}
 
+	/**
+	 * @param iDriver
+	 * @param iMenu
+	 * @return
+	 */
 	public static WebElement pickMenu(WebDriver iDriver, String iMenu) 
 	{
 		List<WebElement> lMenuList = findElements(iDriver, BY.CSS, "a[ng-repeat='menu in orderData.menus | rowSlice:i:colnum");
@@ -844,13 +839,12 @@ public class PosUtil
 				}
 			}
 		}
-		else {
-			return pickMenu(iDriver, iMenu);
-		}
+		
 		return null;
 	}
 
-	public static void holdMenu(WebDriver iDriver, String iMenu) {
+	public static void holdMenu(WebDriver iDriver, String iMenu) 
+	{
 		WebElement lMenu = pickMenu(iDriver, iMenu);
 		Actions lBuilder = new Actions(iDriver);
 		lBuilder.clickAndHold(lMenu).build().perform();

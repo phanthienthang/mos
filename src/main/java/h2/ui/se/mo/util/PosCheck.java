@@ -21,7 +21,8 @@ public class PosCheck
 	
 	public enum Type {Info, Payment}
 	
-	public static void updateDocument(WebDriver iDriver){ 
+	public static void updateDocument(WebDriver iDriver)
+	{ 
 		handleUpdateLink(iDriver, Type.Info);
 	}
 	
@@ -35,7 +36,8 @@ public class PosCheck
 		handlePayCash(iDriver, 0);
 	}
 	
-	public static void handlePayExtraByCash(WebDriver iDriver, int iExtraAmount) {
+	public static void handlePayExtraByCash(WebDriver iDriver, int iExtraAmount)
+	{
 		handlePayCash(iDriver, iExtraAmount);
 	}
 	
@@ -72,7 +74,8 @@ public class PosCheck
 	public static void handleCheckOut(WebDriver iDriver)
 	{
 		WebElement lCheckoutElem = iDriver.findElement(By.linkText("チェックアウト"));
-		if (lCheckoutElem.isEnabled()) {
+		if (lCheckoutElem.isEnabled())
+		{
 			lCheckoutElem.click();
 		}
 		else {

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-import h2.ui.se.mo.util.PosLogUtil;
+import h2.ui.se.mo.util.PosLog;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
@@ -26,13 +26,13 @@ public class LogTest
 	{
 		PosUtil.openSetting(mDriver, "入出金");
 		
-		PosLogUtil.reason(mDriver, "入金");
+		PosLog.reason(mDriver, "入金");
 		
-		PosLogUtil.cash10kIn(mDriver, "5000");
+		PosLog.cash10kIn(mDriver, "5000");
 		
-		PosLogUtil.cash10kOut(mDriver, "1000");
+		PosLog.cash10kOut(mDriver, "1000");
 		
-		PosLogUtil.comment(mDriver, "In 5000, out 1000");
+		PosLog.comment(mDriver, "In 5000, out 1000");
 		
 		PosUtil.findnClick(mDriver, BY.LINKTEXT, "解錠");
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);

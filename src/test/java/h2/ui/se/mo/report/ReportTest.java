@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
@@ -13,10 +12,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.PosCheckUtil;
-import h2.ui.se.mo.util.PosControlUtil;
-import h2.ui.se.mo.util.PosRegisterReportUtil;
-import h2.ui.se.mo.util.PosServiceUtil;
+import h2.ui.se.mo.util.PosCheck;
+import h2.ui.se.mo.util.PosControl;
+import h2.ui.se.mo.util.PosOrder;
+import h2.ui.se.mo.util.PosRegisterReport;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
@@ -55,7 +54,7 @@ public class ReportTest {
 		
 		Thread.sleep(5000);
 		//2. Choose a 業務区分: ランチ
-		PosControlUtil.openBusiness(mDriver, "ランチ");
+		PosControl.openBusiness(mDriver, "ランチ");
 	}
 	
 	//締め確認中
@@ -101,7 +100,7 @@ public class ReportTest {
 		//PosControlUtil.handleAlert(mDriver);
 		
 		Thread.sleep(2000);
-		PosControlUtil.saveReport(mDriver);
+		PosControl.saveReport(mDriver);
 	}
 	
 	//@Test
@@ -128,7 +127,7 @@ public class ReportTest {
 		
 		try {
 			//2. Choose a 業務区分: ディナー
-			PosControlUtil.openBusiness(mDriver, "ディナー");
+			PosControl.openBusiness(mDriver, "ディナー");
 		}
 		catch (NoSuchElementException e) {
 			System.out.println("Another business is opening");
@@ -137,9 +136,9 @@ public class ReportTest {
 		//1. Go to POS管理 - ja
 		PosUtil.openSetting(mDriver, "注文");
 		
-		String lTable = PosUtil.orderRandom(mDriver);
+		String lTable = PosOrder.orderRandom(mDriver);
 		
-		PosUtil.sendOrder(mDriver);
+		PosOrder.sendOrder(mDriver);
 		
 		//Need a common method for alert cancellation.
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
@@ -148,24 +147,24 @@ public class ReportTest {
 		
 		PosUtil.checkOut(mDriver, lTable);
 		
-		PosCheckUtil.payOrder(mDriver);
+		PosCheck.payOrder(mDriver);
 		
-		PosCheckUtil.handleCheckOut(mDriver);
+		PosCheck.handleCheckOut(mDriver);
 		
 		handleAlert(mDriver);
 		mDriver.switchTo().window(lPosWindow);
 		
-		PosControlUtil.back(mDriver);
+		PosControl.back(mDriver);
 		
 		PosUtil.openSetting(mDriver, "POS管理");
 		
 		Thread.sleep(5000);
-		PosControlUtil.closeBusniness(mDriver);
+		PosControl.closeBusniness(mDriver);
 		//PosControlUtil.handleAlert(mDriver);
 		
 		Thread.sleep(5000);
-		PosRegisterReportUtil.fillRegisterOrder(mDriver);
-		PosControlUtil.saveReport(mDriver);
+		PosRegisterReport.fillRegisterOrder(mDriver);
+		PosControl.saveReport(mDriver);
 		PosUtil.back(mDriver);
 	}
 

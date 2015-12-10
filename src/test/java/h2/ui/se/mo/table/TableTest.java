@@ -1,11 +1,9 @@
 package h2.ui.se.mo.table;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +17,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import h2.ui.se.mo.floor.Floor;
-import h2.ui.se.mo.util.Browser;
-import h2.ui.se.mo.util.PosCheckUtil;
-import h2.ui.se.mo.util.PosOrderHistoryUtil;
+import h2.ui.se.mo.util.PosBrowser;
+import h2.ui.se.mo.util.PosCheck;
+import h2.ui.se.mo.util.PosOrder;
+import h2.ui.se.mo.util.PosOrderHistory;
+import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.TableUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 public class TableTest {
@@ -42,10 +41,10 @@ public class TableTest {
 	
 	private void initSfdc() throws InterruptedException
 	{
-		Browser.loginSalesforce(mDriver);
+		PosBrowser.loginSalesforce(mDriver);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//SfdcUtil.openTab(mDriver, "フロアマスタ");
 		
@@ -68,17 +67,17 @@ public class TableTest {
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
-		Browser.newHandle(mDriver);
+		PosBrowser.newHandle(mDriver);
 		
 		//Add new Table
 		Table lTable = new Table("T04", mFloor.getName(), false, false, true);
-		TableUtil.addTable(mDriver, lTable);
+		PosTable.addTable(mDriver, lTable);
 		
 		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
@@ -89,7 +88,7 @@ public class TableTest {
 		
 		PosUtil.refesh(mDriver);
 		
-		Map<String, List<WebElement>> lFloorMap = TableUtil.parse(mDriver);
+		Map<String, List<WebElement>> lFloorMap = PosTable.parse(mDriver);
 		List<WebElement> lTableList = lFloorMap.get(mFloor.getName());
 		
 		for (WebElement lEle: lTableList)
@@ -111,13 +110,13 @@ public class TableTest {
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Open New Table Layout
-		Browser.newHandle(mDriver);
+		PosBrowser.newHandle(mDriver);
 		
 		//Add new Table
 		
@@ -125,7 +124,7 @@ public class TableTest {
 		List<Table> lTableList = new ArrayList<Table>();
 		for (int i = 1; i < 4; i++)
 		{
-			TableUtil.addTable(mDriver, new Table("T-"+i, mFloor.getName(), false, false, true));
+			PosTable.addTable(mDriver, new Table("T-"+i, mFloor.getName(), false, false, true));
 			Thread.sleep(1000);
 			mDriver.findElement(By.name("save_new")).click();
 			Thread.sleep(1000);
@@ -143,13 +142,13 @@ public class TableTest {
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
-		PosUtil.browse(mDriver);
+		PosBrowser.go(mDriver);
 		
 		//Random Edit
 		PosUtil.randomEdit(mDriver);
@@ -181,16 +180,16 @@ public class TableTest {
 		handleClickAndHold(lTableElem, "一時使用不可");
 		
 		String lHoldTable = lTableElem.getText().replaceAll("\\W", "").trim();
-		Browser.loginSalesforce(mDriver);
+		PosBrowser.loginSalesforce(mDriver);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
-		PosUtil.browse(mDriver);
+		PosBrowser.go(mDriver);
 		
 		pickTable(lHoldTable);
 		
@@ -203,7 +202,7 @@ public class TableTest {
 		
 		//T-1-3-2-2 : 一時使用不可解除
 		
-		lTableElem = PosUtil.pickOrderTable(mDriver, lHoldTable);
+		lTableElem = PosTable.pickOrderTable(mDriver, lHoldTable);
 		
 		if (lTableElem != null)
 		{
@@ -221,10 +220,10 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
-		PosUtil.browse(mDriver);
+		PosBrowser.go(mDriver);
 		
 		//Random Edit
 		PosUtil.randomEdit(mDriver);
@@ -263,10 +262,10 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		Browser.openTab(mDriver, "テーブルマスタ");
+		PosBrowser.openTab(mDriver, "テーブルマスタ");
 		
 		//Browse tabbles
-		PosUtil.browse(mDriver);
+		PosBrowser.go(mDriver);
 		
 		//Random Edit
 		PosUtil.randomEdit(mDriver);
@@ -293,10 +292,10 @@ public class TableTest {
 		PosUtil.findnClick(mDriver, BY.LINKTEXT, "送信"); //SEND
 		
 		Thread.sleep(2000);
-		PosCheckUtil.handlePayByCash(mDriver);
+		PosCheck.handlePayByCash(mDriver);
 		
 		Thread.sleep(2000);
-		PosCheckUtil.handleCheckOut(mDriver);
+		PosCheck.handleCheckOut(mDriver);
 		
 		Thread.sleep(2000);
 		PosUtil.screenshot(mDriver, "F141T1411.png");
@@ -312,7 +311,7 @@ public class TableTest {
 		
 		Thread.sleep(2000);
 		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		PosOrderHistory.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
 		
 		Thread.sleep(2000);
 		PosUtil.screenshot(mDriver, "F141T1412.png");
@@ -323,7 +322,7 @@ public class TableTest {
 	public void testF141T1413() throws InterruptedException, IOException 
 	{
 		for (int i = 0; i < 5; i++) {
-			String lTable = PosUtil.orderRandom(mDriver);
+			String lTable = PosOrder.orderRandom(mDriver);
 			
 			Thread.sleep(2000);
 			
@@ -334,13 +333,13 @@ public class TableTest {
 			PosUtil.checkOut(mDriver, lTable);
 			
 			Thread.sleep(2000);
-			PosCheckUtil.handlePayByCash(mDriver);
+			PosCheck.handlePayByCash(mDriver);
 			
 			Thread.sleep(2000);
-			PosCheckUtil.handleCheckOut(mDriver);
+			PosCheck.handleCheckOut(mDriver);
 			
 			Thread.sleep(1000);
-			PosCheckUtil.handleClose(mDriver);
+			PosCheck.handleClose(mDriver);
 		}
 		
 		Thread.sleep(2000);
@@ -350,7 +349,7 @@ public class TableTest {
 		
 		Thread.sleep(2000);
 		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		PosOrderHistory.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
 		
 		Thread.sleep(2000);
 		PosUtil.screenshot(mDriver, "F141T1413.png");
@@ -387,19 +386,19 @@ public class TableTest {
 		
 		Thread.sleep(2000);
 		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		PosOrderHistory.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
 		
-		String lRdmCheck = PosOrderHistoryUtil.selectRdmCheck(mDriver);
+		String lRdmCheck = PosOrderHistory.selectRdmCheck(mDriver);
 		PosUtil.screenshot(mDriver, "F142T1421_Pos.png");
 		
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		initSfdc();
 		
 		//Open Table window
-		Browser.openTab(mDriver, "会計");
+		PosBrowser.openTab(mDriver, "会計");
 		
-		Browser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
-		Browser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		PosBrowser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		PosBrowser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
 		PosUtil.screenshot(mDriver, "F142T1421_Salesforce.png");
 	}
 	
@@ -411,15 +410,15 @@ public class TableTest {
 		
 		Thread.sleep(2000);
 		DateTimeFormatter lDateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		PosOrderHistoryUtil.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
+		PosOrderHistory.filterByDay(mDriver, lDateFormat.format(LocalDate.now()));
 		
 		Thread.sleep(5000);
-		String lRdmCheck = PosOrderHistoryUtil.selectRdmCheck(mDriver);
+		String lRdmCheck = PosOrderHistory.selectRdmCheck(mDriver);
 		
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		Thread.sleep(2000);
-		PosCheckUtil.handleCancel(mDriver);
+		PosCheck.handleCancel(mDriver);
 		//CheckOutPOSUtil.handleCheckOut(mDriver);
 		mDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(mDriver))
@@ -435,10 +434,10 @@ public class TableTest {
 		initSfdc();
 		
 		//Open Table window
-		Browser.openTab(mDriver, "会計");
+		PosBrowser.openTab(mDriver, "会計");
 		
-		Browser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
-		Browser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
+		PosBrowser.search(mDriver, "会計", lRdmCheck.substring(0, 10));
+		PosBrowser.viewSearchResult(mDriver, lRdmCheck.substring(0, 10));
 		PosUtil.screenshot(mDriver, "F143T1413_Salesforce.png");
 	}
 	
@@ -450,9 +449,9 @@ public class TableTest {
 	 */
 	private void pickTable(String iTableName) throws InterruptedException 
 	{
-		Browser.search(mDriver, "テーブルマスタ", iTableName);
+		PosBrowser.search(mDriver, "テーブルマスタ", iTableName);
 		//SfdcUtil.editSearchResult(mDriver);
-		Browser.openRecord(mDriver, iTableName);
+		PosBrowser.openRecord(mDriver, iTableName);
 	}
 
 	/**
@@ -490,7 +489,7 @@ public class TableTest {
 	 */
 	private WebElement pickRandom() throws InterruptedException
 	{
-		Map<String, List<WebElement>> lFloorMap = TableUtil.parseAElement(mDriver);
+		Map<String, List<WebElement>> lFloorMap = PosTable.parseAElement(mDriver);
 		List<String> lFloorList = new ArrayList<String>();
 		for (String lFloor: lFloorMap.keySet()) {
 			lFloorList.add(lFloor);
@@ -542,7 +541,7 @@ public class TableTest {
 	
 	private void handleOrderMenu(WebDriver iDriver, String iTable, int iServiceCharge, int iRate, int iPrice,  String iComment) throws InterruptedException 
 	{
-		PosUtil.orderByTable(iDriver, iTable, iServiceCharge, iRate, iPrice, iComment);
+		PosOrder.orderByTable(iDriver, iTable, iServiceCharge, iRate, iPrice, iComment);
 	}
 	
 	

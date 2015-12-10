@@ -9,11 +9,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.OrderUtil;
-import h2.ui.se.mo.util.Pattern;
-import h2.ui.se.mo.util.PosMenuOptionUtil;
+import h2.ui.se.mo.util.PosMenuOption;
+import h2.ui.se.mo.util.PosOrder;
+import h2.ui.se.mo.util.PosPattern;
+import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.PosUtil.BY;
 
 public class OrderTest {
 	
@@ -25,9 +25,9 @@ public class OrderTest {
 		Thread.sleep(5000);
 		PosUtil.openSetting(lDriver, "注文");
 		Thread.sleep(5000);
-		String lTable = PosUtil.orderRandom(lDriver, 0, 0, 0, "T-1-8-3-1", 2, new int[]{1, 2});
+		String lTable = PosOrder.orderRandom(lDriver, 0, 0, 0, "T-1-8-3-1", 2, new int[]{1, 2});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -61,38 +61,38 @@ public class OrderTest {
 		PosUtil.pickCategory(lDriver, "ｱﾗｶﾙﾄ");
 		PosUtil.holdMenu(lDriver, "牛肉の辛し炒め");
 		
-		PosMenuOptionUtil.addOption(lDriver);
+		PosMenuOption.addOption(lDriver);
 		
-		List<WebElement> lPatternList = PosMenuOptionUtil.getPattern(lDriver);
-		Pattern lPatternOption = new Pattern(lPatternList.get(0));
+		List<WebElement> lPatternList = PosMenuOption.getPattern(lDriver);
+		PosPattern lPatternOption = new PosPattern(lPatternList.get(0));
 		lPatternOption.plus();
 		
-		Pattern lPattern1 = new Pattern(lPatternList.get(1));
+		PosPattern lPattern1 = new PosPattern(lPatternList.get(1));
 		handleAddOption(lPattern1, 2);
 		lPattern1.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "大盛り");
+		PosMenuOption.select(lDriver, "大盛り");
 		PosUtil.back(lDriver);
 		
 		
-		Pattern lPattern = PosMenuOptionUtil.addOption(lDriver);
+		PosPattern lPattern = PosMenuOption.addOption(lDriver);
 		handleAddOption(lPattern, 3);
 		lPattern.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "少なめ");
+		PosMenuOption.select(lDriver, "少なめ");
 		PosUtil.back(lDriver);
 		
-		Pattern lPattern2 = PosMenuOptionUtil.addOption(lDriver);
+		PosPattern lPattern2 = PosMenuOption.addOption(lDriver);
 		handleAddOption(lPattern2, 4);
 		lPattern2.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "野菜抜き");
+		PosMenuOption.select(lDriver, "野菜抜き");
 		PosUtil.back(lDriver);
 		
 		Thread.sleep(3000);
 		PosUtil.close(lDriver);
 		PosUtil.handleConfirm(lDriver);
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().dismiss();
 		if (PosUtil.hasAlert(lDriver))
@@ -109,11 +109,11 @@ public class OrderTest {
 		lOrderHistoryList.get(PosUtil.random(lOrderHistoryList.size())).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.plus(lDriver);
+		PosOrder.plus(lDriver);
 		
 		Thread.sleep(1000);
 		
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		
 		//Test T-1-8-4-2
 		Thread.sleep(5000);
@@ -124,10 +124,10 @@ public class OrderTest {
 		lOrderHistoryList.get(PosUtil.random(lOrderHistoryList.size())).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.minus(lDriver);
+		PosOrder.minus(lDriver);
 		Thread.sleep(2000);
 		
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -147,10 +147,10 @@ public class OrderTest {
 		lOrderHistoryList.get(lDiscountRate).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.discountRate(lDriver, "15");
+		PosOrder.discountRate(lDriver, "15");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -162,10 +162,10 @@ public class OrderTest {
 		lOrderHistoryList.get(lDiscountPrice).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.discountPrice(lDriver, "100");
+		PosOrder.discountPrice(lDriver, "100");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		
 		//Check Salesforce here
@@ -179,9 +179,9 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(lPriority).click();
 		Thread.sleep(3000);
-		OrderUtil.priorityPrice(lDriver, "500");
+		PosOrder.priorityPrice(lDriver, "500");
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -193,10 +193,10 @@ public class OrderTest {
 		lOrderHistoryList.get(lPriority).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.priorityPrice(lDriver, "0");
+		PosOrder.priorityPrice(lDriver, "0");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -208,10 +208,10 @@ public class OrderTest {
 		lOrderHistoryList.get(lPriority).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.clearPriorityPrice(lDriver);
+		PosOrder.clearPriorityPrice(lDriver);
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -223,10 +223,10 @@ public class OrderTest {
 		lOrderHistoryList.get(1).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.clearDiscountRate(lDriver);
+		PosOrder.clearDiscountRate(lDriver);
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -238,10 +238,10 @@ public class OrderTest {
 		lOrderHistoryList.get(2).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.clearDiscountPrice(lDriver);
+		PosOrder.clearDiscountPrice(lDriver);
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -252,12 +252,12 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(1).click();
 		Thread.sleep(3000);
-		OrderUtil.discountRate(lDriver, "10");
-		OrderUtil.clearDiscountRate(lDriver);
+		PosOrder.discountRate(lDriver, "10");
+		PosOrder.clearDiscountRate(lDriver);
 		
-		OrderUtil.discountPrice(lDriver, "100");
+		PosOrder.discountPrice(lDriver, "100");
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -269,11 +269,11 @@ public class OrderTest {
 		lOrderHistoryList.get(2).click();
 		Thread.sleep(3000);
 		
-		OrderUtil.priorityPrice(lDriver, "500");
-		OrderUtil.clearPriorityPrice(lDriver);
-		OrderUtil.discountRate(lDriver, "10");
+		PosOrder.priorityPrice(lDriver, "500");
+		PosOrder.clearPriorityPrice(lDriver);
+		PosOrder.discountRate(lDriver, "10");
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -284,12 +284,12 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(2).click();
 		Thread.sleep(3000);
-		OrderUtil.discountPrice(lDriver, "90");
-		OrderUtil.clearDiscountPrice(lDriver);
-		OrderUtil.discountRate(lDriver, "10");
+		PosOrder.discountPrice(lDriver, "90");
+		PosOrder.clearDiscountPrice(lDriver);
+		PosOrder.discountRate(lDriver, "10");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -300,12 +300,12 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(3).click();
 		Thread.sleep(3000);
-		OrderUtil.priorityPrice(lDriver, "200");
-		OrderUtil.clearPriorityPrice(lDriver);
-		OrderUtil.discountRate(lDriver, "10");
+		PosOrder.priorityPrice(lDriver, "200");
+		PosOrder.clearPriorityPrice(lDriver);
+		PosOrder.discountRate(lDriver, "10");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -316,13 +316,13 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(1).click();
 		Thread.sleep(3000);
-		OrderUtil.discountRate(lDriver, "5");
-		OrderUtil.clearDiscountRate(lDriver);
-		OrderUtil.priorityPrice(lDriver, "200");
+		PosOrder.discountRate(lDriver, "5");
+		PosOrder.clearDiscountRate(lDriver);
+		PosOrder.priorityPrice(lDriver, "200");
 		
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -333,12 +333,12 @@ public class OrderTest {
 		lOrderHistoryList = lDriver.findElements(By.cssSelector("li[ng-repeat='order in history.Orders__r']"));
 		lOrderHistoryList.get(2).click();
 		Thread.sleep(3000);
-		OrderUtil.discountPrice(lDriver, "30");
-		OrderUtil.clearDiscountPrice(lDriver);
-		OrderUtil.priorityPrice(lDriver, "50");
+		PosOrder.discountPrice(lDriver, "30");
+		PosOrder.clearDiscountPrice(lDriver);
+		PosOrder.priorityPrice(lDriver, "50");
 		
 		Thread.sleep(2000);
-		OrderUtil.update(lDriver);
+		PosOrder.update(lDriver);
 		Thread.sleep(5000);
 		PosUtil.close(lDriver);
 		
@@ -354,7 +354,7 @@ public class OrderTest {
 		PosUtil.openSetting(lDriver, "注文");
 		Thread.sleep(5000);
 		
-		WebElement lTable = PosUtil.pickRdmUsingTable(lDriver);
+		WebElement lTable = PosTable.pickRdmUsingTable(lDriver);
 		
 		PosUtil.viewTabHistory(lDriver, lTable.getText());
 		Thread.sleep(10000);
@@ -362,7 +362,7 @@ public class OrderTest {
 		int lOrder = lOrderHistoryList.size()-1;
 		lOrderHistoryList.get(lOrder).click();
 		Thread.sleep(10000);
-		OrderUtil.cancel(lDriver);
+		PosOrder.cancel(lDriver);
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -381,7 +381,7 @@ public class OrderTest {
 	}
 	
 	
-	private void handleAddOption(Pattern iPattern, int iTime){
+	private void handleAddOption(PosPattern iPattern, int iTime){
 		
 		for (int i = 0; i< iTime; i++)
 		{

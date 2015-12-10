@@ -12,8 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import h2.ui.se.mo.util.Browser;
-import h2.ui.se.mo.util.FloorUtil;
+import h2.ui.se.mo.util.PosBrowser;
+import h2.ui.se.mo.util.PosFloor;
 import h2.ui.se.mo.util.PosUtil;
 
 public class FloorTest 
@@ -22,23 +22,23 @@ public class FloorTest
 	@Before
 	public void init() throws InterruptedException
 	{
-		mDriver = PosUtil.init();
+		mDriver = PosUtil.initLocal();
 		Thread.sleep(2000);
 	}
 	
 	@Test
 	public void testAddFloor() throws InterruptedException 
 	{
-		Browser.loginSalesforce(mDriver);
+		PosBrowser.loginSalesforce(mDriver);
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		openFloor();
 		
 		//Open New Floor Layout
-		Browser.newHandle(mDriver);
+		PosBrowser.newHandle(mDriver);
 		
 		//Add new Floor
-		FloorUtil.addFloor(mDriver, new Floor("F-Test"));
+		PosFloor.addFloor(mDriver, new Floor("F"));
 		
 		Thread.sleep(1000);
 		mDriver.findElement(By.name("save")).click();
@@ -53,18 +53,18 @@ public class FloorTest
 	//@Test
 	public void testAddFloors() throws InterruptedException
 	{
-		Browser.loginSalesforce(mDriver);
+		PosBrowser.loginSalesforce(mDriver);
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		openFloor();
 		
 		//Open New Floor Layout
-		Browser.newHandle(mDriver);
+		PosBrowser.newHandle(mDriver);
 		
 		//Add new Floors
 		for (int i = 1; i < 4; i++)
 		{
-			FloorUtil.addFloor(mDriver, new Floor("Test-F"+i));
+			PosFloor.addFloor(mDriver, new Floor("FF"+i));
 			Thread.sleep(1000);
 			mDriver.findElement(By.name("save_new")).click();
 			Thread.sleep(1000);
@@ -80,14 +80,14 @@ public class FloorTest
 	//@Test
 	public void testUpdateFloor() throws InterruptedException 
 	{
-		Browser.loginSalesforce(mDriver);
+		PosBrowser.loginSalesforce(mDriver);
 		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
 		
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Floor window
-		Browser.openTab(mDriver, "フロアマスタ");
+		PosBrowser.openTab(mDriver, "フロアマスタ");
 		
 		//Browse all existence floors
 		browseFloor(mDriver);
@@ -154,9 +154,9 @@ public class FloorTest
 	private void openFloor()
 	{
 		//Open All the tabs
-		Browser.openAllMOTab(mDriver);
+		PosBrowser.openAllMOTab(mDriver);
 		
 		//Open Floor window
-		Browser.openTab(mDriver, "フロアマスタ");
+		PosBrowser.openTab(mDriver, "フロアマスタ");
 	}
 }

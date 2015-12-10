@@ -12,15 +12,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.Browser;
-import h2.ui.se.mo.util.NumpadUtil;
-import h2.ui.se.mo.util.OrderUtil;
-import h2.ui.se.mo.util.Pattern;
-import h2.ui.se.mo.util.PosCheckUtil;
-import h2.ui.se.mo.util.PosMenuOptionUtil;
+import h2.ui.se.mo.util.PosBrowser;
+import h2.ui.se.mo.util.PosCheck;
+import h2.ui.se.mo.util.PosCheck.Type;
+import h2.ui.se.mo.util.PosMenuOption;
+import h2.ui.se.mo.util.PosNumPad.Card;
+import h2.ui.se.mo.util.PosOrder;
+import h2.ui.se.mo.util.PosPattern;
+import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
-import h2.ui.se.mo.util.NumpadUtil.Card;
-import h2.ui.se.mo.util.PosCheckUtil.Type;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 /**
@@ -49,9 +49,9 @@ public class TabTest {
 		PosUtil.openSetting(mDriver, "注文");
 
 		//Test T-1-7-1-1
-		String lTableName = PosUtil.orderRandom(mDriver, 5, 5, 20);
+		String lTableName = PosOrder.orderRandom(mDriver, 5, 5, 20);
 		
-		PosUtil.sendOrder(mDriver);
+		PosOrder.sendOrder(mDriver);
 		
 		Thread.sleep(5000);
 		
@@ -70,7 +70,7 @@ public class TabTest {
 		
 		PosUtil.handleEdit(mDriver, lTableName);
 		
-		PosUtil.editRdmOrder(mDriver, 10, 7, 8, "Edit Randomatically");
+		PosOrder.editRdmOrder(mDriver, 10, 7, 8, "Edit Randomatically");
 		
 		//Test T-1-7-3-1
 		PosUtil.viewTabHistory(mDriver, lTableName);
@@ -82,7 +82,7 @@ public class TabTest {
 		
 		//Test T-1-7-4-1
 		PosUtil.moveTable(mDriver, lTableName);
-		WebElement lTblElem = PosUtil.pickRdmTable(mDriver);
+		WebElement lTblElem = PosTable.pickRdmTable(mDriver);
 		lTableName = lTblElem.getText();
 		lTblElem.click();
 		
@@ -93,7 +93,7 @@ public class TabTest {
 		
 		//Test T-1-7-5-1
 		PosUtil.shareTable(mDriver, lTableName);
-		PosUtil.editRdmOrder(mDriver, 4, 5, 6, "Share Table");
+		PosOrder.editRdmOrder(mDriver, 4, 5, 6, "Share Table");
 		PosUtil.cancel(mDriver);
 		Thread.sleep(5000);
 		PosUtil.screenshot(mDriver, "T1751.png");
@@ -101,10 +101,10 @@ public class TabTest {
 		
 		//Test T-1-7-6-1
 		PosUtil.findnClick(mDriver, BY.LINKTEXT, "選択");
-		WebElement lTblEle1Grp = PosUtil.pickRdmTable(mDriver);
-		WebElement lTblEle2Grp = PosUtil.pickRdmTable(mDriver);
+		WebElement lTblEle1Grp = PosTable.pickRdmTable(mDriver);
+		WebElement lTblEle2Grp = PosTable.pickRdmTable(mDriver);
 		PosUtil.findnClick(mDriver, BY.LINKTEXT, "新規伝票");
-		PosUtil.editRdmOrder(mDriver, 4, 5, 6, "Share Table");
+		PosOrder.editRdmOrder(mDriver, 4, 5, 6, "Share Table");
 		PosUtil.findnClick(mDriver, BY.LINKTEXT, "キャンセル");
 		
 		//Test T-1-7-7-1
@@ -125,13 +125,13 @@ public class TabTest {
 		Thread.sleep(5000);
 		PosUtil.openSetting(lDriver, "注文");
 		Thread.sleep(5000);
-		WebElement lTable = PosUtil.pickRdmTable(lDriver);
+		WebElement lTable = PosTable.pickRdmTable(lDriver);
 		String lTableName = lTable.getText();
 				
-		PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-4-4");
+		PosOrder.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-4-4");
 		//String lTable = PosUtil.orderRandom(lDriver, 0, 0, 0, "Rdm T-1-9-4-3", 1, new int[]{1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -146,9 +146,9 @@ public class TabTest {
 		
 		PosUtil.checkOut(lDriver, lTableName);
 		Thread.sleep(5000);
-		PosCheckUtil.handlePayExtraByCash(lDriver, 200);
+		PosCheck.handlePayExtraByCash(lDriver, 200);
 		
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -166,7 +166,7 @@ public class TabTest {
 			
 		}
 		Thread.sleep(2000);
-		String lCheckNo = PosCheckUtil.getCheckNo(lDriver);
+		String lCheckNo = PosCheck.getCheckNo(lDriver);
 		
 		Thread.sleep(5000);
 		
@@ -180,7 +180,7 @@ public class TabTest {
 		}
 		lDriver.switchTo().window(lPosWindow);
 		
-		Browser.browse(lDriver, "会計", lCheckNo);
+		PosBrowser.browse(lDriver, "会計", lCheckNo);
 		
 		Thread.sleep(5000);
 		
@@ -200,9 +200,9 @@ public class TabTest {
 		　　→ this process cancels the money received in T-1-9-1-1/T-1-9-4-1*/
 		
 		//Test T-1-9-4-2 - クレジットカード
-		PosCheckUtil.payByCard(lDriver, Card.Amex);
+		PosCheck.payByCard(lDriver, Card.Amex);
 		Thread.sleep(3000);
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -240,9 +240,9 @@ public class TabTest {
 		　　→ this process cancels the money received in T-1-9-1-1/T-1-9-4-2*/
 		
 		//Test T-1-9-4-3 - 商品券
-		PosCheckUtil.payByGift(lDriver);
+		PosCheck.payByGift(lDriver);
 		Thread.sleep(3000);
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -281,9 +281,9 @@ public class TabTest {
 		 　　→ this process cancels the money received in T-1-9-1-1/T-1-9-4-3*/
 		
 		//Test - T-1-9-4-4
-		PosCheckUtil.payByAll(lDriver);
+		PosCheck.payByAll(lDriver);
 		Thread.sleep(3000);
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -313,9 +313,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 10, 0, 0, "T-1-8-3-1", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 10, 0, 0, "T-1-8-3-1", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -335,7 +335,7 @@ public class TabTest {
 		Thread.sleep(3000);
 		
 		Thread.sleep(10000);
-		OrderUtil.cancel(lDriver);
+		PosOrder.cancel(lDriver);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
 		{
@@ -347,9 +347,9 @@ public class TabTest {
 		
 		PosUtil.checkOut(lDriver, lTable);
 		Thread.sleep(5000);
-		PosCheckUtil.handlePayExtraByCash(lDriver, 200);
+		PosCheck.handlePayExtraByCash(lDriver, 200);
 		
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -383,9 +383,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-3", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-3", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -406,23 +406,23 @@ public class TabTest {
 		PosUtil.pickCategory(lDriver, "ｱﾗｶﾙﾄ");
 		PosUtil.holdMenu(lDriver, "牛肉の辛し炒め");
 		
-		PosMenuOptionUtil.addOption(lDriver);
+		PosMenuOption.addOption(lDriver);
 		
-		List<WebElement> lPatternList = PosMenuOptionUtil.getPattern(lDriver);
+		List<WebElement> lPatternList = PosMenuOption.getPattern(lDriver);
 		//Pattern lPatternOption = new Pattern(lPatternList.get(0));
 		//lPatternOption.plus();
 		
-		Pattern lPattern1 = new Pattern(lPatternList.get(1));
+		PosPattern lPattern1 = new PosPattern(lPatternList.get(1));
 		lPattern1.plus();
 		lPattern1.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "大盛り");
+		PosMenuOption.select(lDriver, "大盛り");
 		Thread.sleep(2000);
 		PosUtil.back(lDriver);
 		Thread.sleep(3000);
 		PosUtil.close(lDriver);
 		PosUtil.handleConfirm(lDriver);
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -433,9 +433,9 @@ public class TabTest {
 		
 		PosUtil.checkOut(lDriver, lTable);
 		Thread.sleep(5000);
-		PosCheckUtil.handlePayExtraByCash(lDriver, 200);
+		PosCheck.handlePayExtraByCash(lDriver, 200);
 		
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -469,9 +469,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 10, 0, 0, "T-1-9-1-4", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 10, 0, 0, "T-1-9-1-4", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -486,9 +486,9 @@ public class TabTest {
 		
 		PosUtil.checkOut(lDriver, lTable);
 		Thread.sleep(5000);
-		PosCheckUtil.handlePayExtraByCash(lDriver, 200);
+		PosCheck.handlePayExtraByCash(lDriver, 200);
 		
-		PosCheckUtil.handleCheckOut(lDriver);
+		PosCheck.handleCheckOut(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -524,9 +524,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 10, 100, 300, "T-1-9-1-8", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 10, 100, 300, "T-1-9-1-8", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -563,19 +563,19 @@ public class TabTest {
 		PosUtil.checkOut(lDriver, lTable);
 		Thread.sleep(5000);
 		
-		PosCheckUtil.updateDocument(lDriver);
-		PosCheckUtil.updateMale(lDriver, 5);
-		PosCheckUtil.updateFemale(lDriver, 5);
-		PosCheckUtil.updateComment(lDriver, "T-1-9-2-1");
-		PosCheckUtil.update(lDriver, Type.Info);
+		PosCheck.updateDocument(lDriver);
+		PosCheck.updateMale(lDriver, 5);
+		PosCheck.updateFemale(lDriver, 5);
+		PosCheck.updateComment(lDriver, "T-1-9-2-1");
+		PosCheck.update(lDriver, Type.Info);
 		Thread.sleep(5000);
 		
 		//T-1-9-2-2 - 支払い情報の編集
-		PosCheckUtil.updatePaymentInfo(lDriver);
-		PosCheckUtil.updateServiceCharge(lDriver, 5);
-		PosCheckUtil.updateDiscountRate(lDriver, 10);
-		PosCheckUtil.updateDiscountPrice(lDriver, 200);
-		PosCheckUtil.update(lDriver, Type.Payment);
+		PosCheck.updatePaymentInfo(lDriver);
+		PosCheck.updateServiceCharge(lDriver, 5);
+		PosCheck.updateDiscountRate(lDriver, 10);
+		PosCheck.updateDiscountPrice(lDriver, 200);
+		PosCheck.update(lDriver, Type.Payment);
 	}
 	
 	//@Test
@@ -588,9 +588,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-10", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-10", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -611,24 +611,24 @@ public class TabTest {
 		PosUtil.pickCategory(lDriver, "ｱﾗｶﾙﾄ");
 		PosUtil.holdMenu(lDriver, "牛肉の辛し炒め");
 		
-		PosMenuOptionUtil.addOption(lDriver);
+		PosMenuOption.addOption(lDriver);
 		
-		List<WebElement> lPatternList = PosMenuOptionUtil.getPattern(lDriver);
+		List<WebElement> lPatternList = PosMenuOption.getPattern(lDriver);
 		//Pattern lPatternOption = new Pattern(lPatternList.get(0));
 		//lPatternOption.plus();
 		
-		Pattern lPattern1 = new Pattern(lPatternList.get(1));
+		PosPattern lPattern1 = new PosPattern(lPatternList.get(1));
 		lPattern1.plus();
 		lPattern1.priorityPrice("2000");
 		lPattern1.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "大盛り");
+		PosMenuOption.select(lDriver, "大盛り");
 		Thread.sleep(2000);
 		PosUtil.back(lDriver);
 		Thread.sleep(3000);
 		PosUtil.close(lDriver);
 		PosUtil.handleConfirm(lDriver);
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -663,9 +663,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-11", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-11", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -686,24 +686,24 @@ public class TabTest {
 		PosUtil.pickCategory(lDriver, "ｱﾗｶﾙﾄ");
 		PosUtil.holdMenu(lDriver, "牛肉の辛し炒め");
 		
-		PosMenuOptionUtil.addOption(lDriver);
+		PosMenuOption.addOption(lDriver);
 		
-		List<WebElement> lPatternList = PosMenuOptionUtil.getPattern(lDriver);
+		List<WebElement> lPatternList = PosMenuOption.getPattern(lDriver);
 		//Pattern lPatternOption = new Pattern(lPatternList.get(0));
 		//lPatternOption.plus();
 		
-		Pattern lPattern1 = new Pattern(lPatternList.get(1));
+		PosPattern lPattern1 = new PosPattern(lPatternList.get(1));
 		lPattern1.plus();
 		lPattern1.discountRate("5");
 		lPattern1.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "大盛り");
+		PosMenuOption.select(lDriver, "大盛り");
 		Thread.sleep(2000);
 		PosUtil.back(lDriver);
 		Thread.sleep(3000);
 		PosUtil.close(lDriver);
 		PosUtil.handleConfirm(lDriver);
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))
@@ -738,9 +738,9 @@ public class TabTest {
 		//String lTableName = lTable.getText();
 				
 		//PosUtil.orderByTable(lDriver, lTableName, 0, 0, 0, "T-1-9-1-2");
-		String lTable = PosUtil.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-12", 2, new int[]{1, 1});
+		String lTable = PosOrder.orderRandom(lDriver, 0, 10, 0, "T-1-9-1-12", 2, new int[]{1, 1});
 		
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(8000);
 		
 		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
@@ -761,24 +761,24 @@ public class TabTest {
 		PosUtil.pickCategory(lDriver, "ｱﾗｶﾙﾄ");
 		PosUtil.holdMenu(lDriver, "牛肉の辛し炒め");
 		
-		PosMenuOptionUtil.addOption(lDriver);
+		PosMenuOption.addOption(lDriver);
 		
-		List<WebElement> lPatternList = PosMenuOptionUtil.getPattern(lDriver);
+		List<WebElement> lPatternList = PosMenuOption.getPattern(lDriver);
 		//Pattern lPatternOption = new Pattern(lPatternList.get(0));
 		//lPatternOption.plus();
 		
-		Pattern lPattern1 = new Pattern(lPatternList.get(1));
+		PosPattern lPattern1 = new PosPattern(lPatternList.get(1));
 		lPattern1.plus();
 		lPattern1.discountByNumber("60");
 		lPattern1.editOption();
 		Thread.sleep(2000);
-		PosMenuOptionUtil.select(lDriver, "大盛り");
+		PosMenuOption.select(lDriver, "大盛り");
 		Thread.sleep(2000);
 		PosUtil.back(lDriver);
 		Thread.sleep(3000);
 		PosUtil.close(lDriver);
 		PosUtil.handleConfirm(lDriver);
-		PosUtil.sendOrder(lDriver);
+		PosOrder.sendOrder(lDriver);
 		Thread.sleep(5000);
 		lDriver.switchTo().alert().accept();
 		if (PosUtil.hasAlert(lDriver))

@@ -12,14 +12,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import h2.ui.se.mo.check.PosCheck;
+import h2.ui.se.mo.check.PosCheck.Type;
+import h2.ui.se.mo.check.pad.PosNumPad.Card;
+import h2.ui.se.mo.menu.option.PosMenuOption;
+import h2.ui.se.mo.menu.option.pattern.PosPattern;
+import h2.ui.se.mo.order.PosOrder;
+import h2.ui.se.mo.table.PosTable;
 import h2.ui.se.mo.util.PosBrowser;
-import h2.ui.se.mo.util.PosCheck;
-import h2.ui.se.mo.util.PosCheck.Type;
-import h2.ui.se.mo.util.PosMenuOption;
-import h2.ui.se.mo.util.PosNumPad.Card;
-import h2.ui.se.mo.util.PosOrder;
-import h2.ui.se.mo.util.PosPattern;
-import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
@@ -70,7 +70,7 @@ public class TabTest {
 		
 		PosUtil.handleEdit(mDriver, lTableName);
 		
-		PosOrder.editRdmOrder(mDriver, 10, 7, 8, "Edit Randomatically");
+		PosOrder.editRdmOrder(mDriver, 10, 7, 8, "Random edit.");
 		
 		//Test T-1-7-3-1
 		PosUtil.viewTabHistory(mDriver, lTableName);

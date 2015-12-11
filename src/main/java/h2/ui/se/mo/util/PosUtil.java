@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
@@ -34,8 +35,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import h2.ui.se.mo.table.PosTable;
+
 public class PosUtil 
 {
+	static Logger logger = Logger.getLogger(PosUtil.class);
 	
 	public enum OS { windows, mac }
 	public enum BY {ID, XPATH, NAME, CSS, LINKTEXT, PARTIALLINKTEXT, TAGNAME, CLASS }
@@ -49,7 +53,6 @@ public class PosUtil
 		// For use with ChromeDriver:
 		WebDriver driver = new ChromeDriver(initOption());
 		
-		//driver.manage().window().maximize();
 		driver.get("chrome://apps/");
 
 		List<WebElement> lWebElementList = driver.findElements(By.tagName("div"));
@@ -115,7 +118,8 @@ public class PosUtil
 	 */
 	protected static WebDriver handleLogin(WebDriver iDriver) 
 	{
-		try {
+		try 
+		{
 			ArrayList<String> lTabs = new ArrayList<String> (iDriver.getWindowHandles());
 			String lPosWindow = lTabs.get(0);
 			String lLoginWindow = lTabs.get(1);
@@ -132,21 +136,30 @@ public class PosUtil
 			
 			return isLoaded(iDriver);
 		}
-		catch (WebDriverException e) {
+		catch (WebDriverException e) 
+		{
+			logger.info("ERROR login: "+e.getMessage());
 			return handleLogin(iDriver);
 		}
 	}
 	
+	/**
+	 * 
+	 * @param iDriver
+	 * @return
+	 */
 	public static WebDriver isLoaded(WebDriver iDriver)
 	{
 		try 
 		{
-			if (iDriver.findElement(By.id("slide-menu")).isDisplayed()) {
+			if (iDriver.findElement(By.id("slide-menu")).isDisplayed())
+			{
 				return iDriver;
 			}
 		}
-		catch (WebDriverException e) {
-			
+		catch (WebDriverException e)
+		{
+			logger.info("System in loading: "+e.getMessage());
 		}
 		return isLoaded(iDriver);
 	}
@@ -182,6 +195,9 @@ public class PosUtil
 		return mPlatform;
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void loginInputHandle(WebDriver iDriver)
 	{
 		if (PosValidator.isInputable(iDriver, "username")) 
@@ -193,13 +209,13 @@ public class PosUtil
 		{
 			iDriver.findElement(By.id("password")).sendKeys(PosConfig.getConfig(PosConstant.MO_LOGIN_PASSWORD));
 			iDriver.findElement(By.id("password")).sendKeys(Keys.ENTER);
-			
 		}
-		
-		//waitClickId(iDriver, "Login");
-		
 	}
 	
+	/**
+	 * Init Chrome Driver
+	 * @return
+	 */
 	public static WebDriver initChromeDriver() 
 	{
 		System.setProperty(PosConstant.WEBDRIVER_CHROME_DRIVER, PosConfig.getConfig(PosConstant.WEBDRIVER_CHROME_DRIVER));
@@ -207,37 +223,6 @@ public class PosUtil
 		driver.manage().window().maximize();
 		return driver;
 	}
-	
-	
-	/*class WatchDog {
-	    Timer timer;
-	    boolean isLoaded;
-	    WebDriver driver;
-
-	    public WatchDog(int seconds, WebDriver iDriver) {
-	        timer = new Timer();
-	        timer.schedule(new RemindTask(), seconds*1000);
-	        isLoaded = iDriver.getWindowHandles().size() > 1;
-	        driver = iDriver;
-		}
-	    
-	    public WebDriver getDriver()
-	    {
-	    	return driver;
-	    }
-
-	    class RemindTask extends TimerTask {
-	        public void run() {
-	            
-	            if (isLoaded) 
-	            {
-	            	driver = handleLogin(driver);
-	            	timer.cancel(); //Terminate the timer thread
-	            }
-	            
-	        }
-	    }
-	}*/
 	
 	/**
 	 * Order settings
@@ -250,23 +235,32 @@ public class PosUtil
 	{
 		if (!isMenuDisplay(iDriver, iName))
 		{
-			try {
+			try 
+			{
 				menu(iDriver);
-			} catch (WebDriverException e) {
+			} 
+			catch (WebDriverException e) 
+			{
 				openSetting(iDriver, iName);
 			}
 		}
 		
 		Map<String, WebElement> settings =  parseMenu(iDriver);
-		if (settings.size() != 0 && settings.get(iName) != null) {
+		if (settings.size() != 0 && settings.get(iName) != null)
+		{
 			waitnClick(iDriver, settings.get(iName));
 		}
-		else {
+		else 
+		{
 			openSetting(iDriver, iName);
 		}
-		
 	}
 	
+	/**
+	 * Browse Menu Items
+	 * @param iDriver
+	 * @return
+	 */
 	private static Map<String, WebElement> parseMenu(WebDriver iDriver) 
 	{
 		Map<String, WebElement> lSettings = new HashMap<String, WebElement>();
@@ -305,37 +299,46 @@ public class PosUtil
 	 * @param iDriver
 	 * @throws InterruptedException 
 	 */
-	public static void refesh(WebDriver iDriver) throws InterruptedException
+	public static void refesh(WebDriver iDriver)
 	{
-		Thread.sleep(1000);
-		PosUtil.openSetting(iDriver, "設定"); //SETTINGS
-		
-		Thread.sleep(1000);
-		PosUtil.openDataAdmin(iDriver);
-		
-		Thread.sleep(1000);
-		List<WebElement> lEleList = iDriver.findElements(By.tagName("a"));
-		for(WebElement lEle: lEleList)
+		try
 		{
-			 if (lEle.getText().indexOf("再取得") != -1) {
-				 lEle.click();
-				 break;
-			 }
+			Thread.sleep(1000);
+			PosUtil.openSetting(iDriver, "設定"); //SETTINGS
+			
+			Thread.sleep(1000);
+			PosUtil.openDataAdmin(iDriver);
+			
+			Thread.sleep(1000);
+			List<WebElement> lEleList = iDriver.findElements(By.tagName("a"));
+			for(WebElement lEle: lEleList)
+			{
+				 if (lEle.getText().indexOf("再取得") != -1)
+				 {
+					 lEle.click();
+					 break;
+				 }
+			}
+			
+			Thread.sleep(3000);
+			
+			iDriver.switchTo().alert().accept();
+			Thread.sleep(2000);
+			List<String> lWindows = new ArrayList<String>(iDriver.getWindowHandles());
+			iDriver.switchTo().window(lWindows.get(0));
+			PosUtil.back(iDriver);
+			
+			Thread.sleep(2000);
+			PosUtil.menu(iDriver);
+		
+			Thread.sleep(1000);
+			PosUtil.openSetting(iDriver, "注文"); //ORDER
+			
 		}
-		
-		Thread.sleep(3000);
-		
-		iDriver.switchTo().alert().accept();
-		Thread.sleep(2000);
-		List<String> lWindows = new ArrayList<String>(iDriver.getWindowHandles());
-		iDriver.switchTo().window(lWindows.get(0));
-		PosUtil.back(iDriver);
-		
-		Thread.sleep(2000);
-		PosUtil.menu(iDriver);
-	
-		Thread.sleep(1000);
-		PosUtil.openSetting(iDriver, "注文"); //ORDER
+		catch (Exception e)
+		{
+			logger.info("Error at refresh: "+ e.getMessage(), new Throwable(e.getMessage()));
+		}
 	}
 
 	/**
@@ -361,16 +364,22 @@ public class PosUtil
 	 */
 	public static void back(WebDriver iDriver) 
 	{
-		try {
+		try 
+		{
 			iDriver.findElement(By.cssSelector("a[data-action='back']")).click();
-		}catch (WebDriverException e) {
+		}
+		catch (WebDriverException e) 
+		{
+			logger.info("Error when click back: "+ e.getMessage(), new Throwable(e.getMessage()));
 			back(iDriver);
 		}
-		//WebDriverWait lWait = new WebDriverWait(iDriver, 10);
-		//lWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[data-action='back']")));
 		
 	}
 	
+	/**
+	 * Click close link
+	 * @param iDriver
+	 */
 	public static void close(WebDriver iDriver) 
 	{
 		iDriver.findElement(By.cssSelector("a[data-action='close']")).click();
@@ -446,23 +455,30 @@ public class PosUtil
 	}
 	
 	public static void cancel(WebDriver iDriver) {
-		try {
+		try 
+		{
 			findnClick(iDriver, BY.LINKTEXT, "キャンセル");
 		}
-		catch (WebDriverException e) {
-			cancel(iDriver);
+		catch (WebDriverException e)
+		{
+			logger.info("Error when click cancel: "+ e.getMessage(), new Throwable(e.getMessage()));
 		}
 	}
 	
 	public static void randomEdit(WebDriver iDriver)
 	{
-		if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
-			//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
-			List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-			int lRandomFloor = PosUtil.random(lElems.size())+1;
-			
-			//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
-			lElems.get(lRandomFloor).click();
+		try {
+			if(checkElements(iDriver, BY.LINKTEXT, "Edit")) {
+				//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
+				List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
+				int lRandomFloor = PosUtil.random(lElems.size())+1;
+				
+				//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
+				lElems.get(lRandomFloor).click();
+			}
+		}
+		catch (Exception e) {
+			logger.info("Error with random edit: "+ e.getMessage(), new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -478,9 +494,11 @@ public class PosUtil
 			lAlertWait.until(ExpectedConditions.alertIsPresent());
 			return true;
 		}
-		catch (TimeoutException e) {
-			return false;
+		catch (TimeoutException e) 
+		{
+			logger.info("Timeout exception error: "+ e.getMessage(), new Throwable(e.getMessage()));
 		}
+		return false;
 	}
 	
 	public static void handleAlert(WebDriver iDriver)
@@ -495,7 +513,8 @@ public class PosUtil
 			}
 			iDriver.switchTo().window(lPosWindow);
 		} catch (NoAlertPresentException e) {
-			handleAlert(iDriver);
+			
+			logger.error("Handle Alert error: "+ e.getMessage(), new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -515,15 +534,15 @@ public class PosUtil
 			{
 				return true;
 			}
-			return false;
+			
 		}
-		catch (TimeoutException e) {
-			return false;
+		catch (TimeoutException e) 
+		{
+			logger.error("Error at isMenuDisplay: "+ e.getMessage(), new Throwable(e.getMessage()));
 		}
+		return false;
 		
 	}
-
-	
 	
 	private static void waitClickId(WebDriver iDriver, String iId)
 	{
@@ -698,6 +717,15 @@ public class PosUtil
 			pickTable(iDriver, iTableName);
 		}
 		
+	}
+	
+	/**
+	 * @param iDriver
+	 */
+	public static void save(WebDriver iDriver)
+	{
+		//完了
+		PosUtil.findnClick(iDriver, BY.LINKTEXT, "完了");
 	}
 
 	public static void order(WebDriver iDriver) 
@@ -906,6 +934,23 @@ public class PosUtil
 		            builder = new StringBuilder();
 		    }
 		    return builder.toString();
+	}
+	
+	public static void dismiss(WebDriver iDriver) 
+	{
+		try 
+		{
+			String lPosWindow = new ArrayList<String> (iDriver.getWindowHandles()).get(0);
+			iDriver.switchTo().alert().dismiss();
+			if (PosUtil.hasAlert(iDriver)) {
+				iDriver.switchTo().alert().dismiss();
+			}
+			iDriver.switchTo().window(lPosWindow);
+		}
+		catch (NoAlertPresentException e)
+		{
+			handleAlert(iDriver);
+		}
 	}
 
 }

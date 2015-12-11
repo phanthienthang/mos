@@ -1,7 +1,7 @@
 /**
  * 
  */
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.check;
 
 import java.util.List;
 
@@ -9,7 +9,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.PosNumPad.Card;
+import h2.ui.se.mo.check.pad.PosNumPad;
+import h2.ui.se.mo.check.pad.PosNumPad.Card;
+import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 /**

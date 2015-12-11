@@ -8,7 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import h2.ui.se.mo.util.PosBrowser;
-import h2.ui.se.mo.util.PosStaff;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 import junit.framework.Assert;

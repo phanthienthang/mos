@@ -9,10 +9,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.PosMenuOption;
-import h2.ui.se.mo.util.PosOrder;
-import h2.ui.se.mo.util.PosPattern;
-import h2.ui.se.mo.util.PosTable;
+import h2.ui.se.mo.menu.option.PosMenuOption;
+import h2.ui.se.mo.menu.option.pattern.PosPattern;
+import h2.ui.se.mo.table.PosTable;
 import h2.ui.se.mo.util.PosUtil;
 
 public class OrderTest {

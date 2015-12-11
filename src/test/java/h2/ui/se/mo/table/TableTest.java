@@ -16,12 +16,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import h2.ui.se.mo.check.PosCheck;
 import h2.ui.se.mo.floor.Floor;
+import h2.ui.se.mo.order.PosOrder;
+import h2.ui.se.mo.order.PosOrderHistory;
 import h2.ui.se.mo.util.PosBrowser;
-import h2.ui.se.mo.util.PosCheck;
-import h2.ui.se.mo.util.PosOrder;
-import h2.ui.se.mo.util.PosOrderHistory;
-import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 

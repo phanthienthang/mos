@@ -1,12 +1,10 @@
 /**
  * 
  */
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.floor;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-import h2.ui.se.mo.floor.Floor;
 
 /**
  * @author thienthang

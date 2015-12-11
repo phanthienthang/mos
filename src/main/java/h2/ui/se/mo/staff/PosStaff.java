@@ -1,4 +1,4 @@
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.staff;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.staff.Staff;
+import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 public class PosStaff 

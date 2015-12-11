@@ -1,4 +1,4 @@
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.table.Table;
+import h2.ui.se.mo.util.PosUtil;
 
 public class PosTable 
 {

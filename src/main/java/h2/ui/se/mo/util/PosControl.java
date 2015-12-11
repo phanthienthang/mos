@@ -23,7 +23,6 @@ public class PosControl {
 				break;
 			}
 		}
-		
 	}
 	
 	public static void openBusiness(WebDriver iDriver, String iTimeSlot)
@@ -33,36 +32,33 @@ public class PosControl {
 		PosUtil.handleAlert(iDriver);
 	}
 	
-	public static void closeBusniness(WebDriver iDriver) {
+	public static void closeBusniness(WebDriver iDriver)
+	{
 		try {
 			PosUtil.findnClick(iDriver, BY.LINKTEXT, "本締め業務");
 		} catch (WebDriverException e) {
 			PosUtil.findnClick(iDriver, BY.LINKTEXT, "作業中の締め業務に戻る");
 		}
-		
 	}
 	
 	public static void openReportHistory(WebDriver iDriver)
 	{
 		//過去の業務履歴
-		
 	}
 	
 	public static void closeReport(WebDriver iDriver){
 		//仮締め業務
 	}
 	
-	public static void saveReport(WebDriver iDriver)
+	public static void back(WebDriver iDriver)
 	{
-		//完了
-		PosUtil.findnClick(iDriver, BY.LINKTEXT, "完了");
-	}
-	
-	public static void back(WebDriver iDriver){
 		PosUtil.findnClick(iDriver, BY.LINKTEXT, "閉じる");
 	}
 	
-	public static void returnReport(WebDriver iDriver) {}
+	public static void returnReport(WebDriver iDriver) 
+	{
+		
+	}
 	
 	public static void vietReport(WebDriver iDriver)
 	{

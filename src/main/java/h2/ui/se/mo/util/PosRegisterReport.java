@@ -28,7 +28,8 @@ public class PosRegisterReport
 	private static void registCash(WebDriver iDriver, Double iAmount)
 	{
 		Map<Double, String> lCouterMap = count(iAmount);
-		for(Double lEntry: lCouterMap.keySet()) {
+		for(Double lEntry: lCouterMap.keySet()) 
+		{
 			
 			iDriver.findElement(By.cssSelector(new StringBuilder().append("input[ng-model='report.ActNumberOf")
 					.append(String.valueOf(Math.round(Double.valueOf(lEntry)))).append("Yen__c']").toString()))
@@ -53,11 +54,6 @@ public class PosRegisterReport
 			}
 		}
 		return lResult;
-	}
-	
-	public static void save(WebDriver iDriver)
-	{
-		PosUtil.findnClick(iDriver, BY.LINKTEXT, "完了");
 	}
 	
 	private static String parseReportAmount(WebDriver iDriver) 

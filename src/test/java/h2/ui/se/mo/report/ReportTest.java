@@ -12,9 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import h2.ui.se.mo.util.PosCheck;
+import h2.ui.se.mo.check.PosCheck;
+import h2.ui.se.mo.order.PosOrder;
 import h2.ui.se.mo.util.PosControl;
-import h2.ui.se.mo.util.PosOrder;
 import h2.ui.se.mo.util.PosRegisterReport;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
@@ -100,7 +100,7 @@ public class ReportTest {
 		//PosControlUtil.handleAlert(mDriver);
 		
 		Thread.sleep(2000);
-		PosControl.saveReport(mDriver);
+		PosUtil.save(mDriver);
 	}
 	
 	//@Test
@@ -125,11 +125,13 @@ public class ReportTest {
 		//1. Go to POS管理 - ja
 		PosUtil.openSetting(mDriver, "POS管理");
 		
-		try {
+		try 
+		{
 			//2. Choose a 業務区分: ディナー
 			PosControl.openBusiness(mDriver, "ディナー");
 		}
-		catch (NoSuchElementException e) {
+		catch (NoSuchElementException e)
+		{
 			System.out.println("Another business is opening");
 		}
 		
@@ -141,9 +143,7 @@ public class ReportTest {
 		PosOrder.sendOrder(mDriver);
 		
 		//Need a common method for alert cancellation.
-		String lPosWindow = new ArrayList<String> (mDriver.getWindowHandles()).get(0);
-		handleAlert(mDriver);
-		mDriver.switchTo().window(lPosWindow);
+		PosUtil.dismiss(mDriver);
 		
 		PosUtil.checkOut(mDriver, lTable);
 		
@@ -151,8 +151,7 @@ public class ReportTest {
 		
 		PosCheck.handleCheckOut(mDriver);
 		
-		handleAlert(mDriver);
-		mDriver.switchTo().window(lPosWindow);
+		PosUtil.dismiss(mDriver);
 		
 		PosControl.back(mDriver);
 		
@@ -164,21 +163,8 @@ public class ReportTest {
 		
 		Thread.sleep(5000);
 		PosRegisterReport.fillRegisterOrder(mDriver);
-		PosControl.saveReport(mDriver);
+		PosUtil.save(mDriver);
 		PosUtil.back(mDriver);
-	}
-
-	private void handleAlert(WebDriver iDriver)
-	{
-		try {
-			iDriver.switchTo().alert().dismiss();
-			if (PosUtil.hasAlert(iDriver)) {
-				iDriver.switchTo().alert().dismiss();
-			}
-		}
-		catch (NoAlertPresentException e) {
-			handleAlert(iDriver);
-		}
 	}
 	
 	@Test
@@ -206,9 +192,5 @@ public class ReportTest {
 			vieReportHistory(iDriver);
 		}
 	}
-	
-	
-	
-	
 
 }

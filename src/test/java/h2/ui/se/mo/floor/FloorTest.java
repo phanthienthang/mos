@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import h2.ui.se.mo.util.PosBrowser;
-import h2.ui.se.mo.util.PosFloor;
 import h2.ui.se.mo.util.PosUtil;
 
 public class FloorTest 

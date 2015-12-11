@@ -10,10 +10,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import h2.ui.se.mo.menu.Menu;
+import h2.ui.se.mo.menu.option.PosMenuOption;
+import h2.ui.se.mo.menu.option.pattern.PosPattern;
+import h2.ui.se.mo.table.PosTable;
 import h2.ui.se.mo.util.PosBrowser;
-import h2.ui.se.mo.util.PosMenuOption;
-import h2.ui.se.mo.util.PosPattern;
-import h2.ui.se.mo.util.PosTable;
 import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
@@ -79,8 +79,8 @@ public class CategoryTest
 		//Open Table window
 		PosBrowser.openTab(lDriver, "メニューマスタ");
 		
-		for (int i = 0; i < lMenuList.size(); i++) {
-			
+		for (int i = 0; i < lMenuList.size(); i++)
+		{
 			PosUtil.findnClick(lDriver, BY.LINKTEXT, lMenuList.get(i));
 			Menu.newMenuCategory(lDriver);
 			Menu.addMenuRelation(lDriver, "CF00N28000007Hr2Z", lCategoryList.get(i));
@@ -96,10 +96,12 @@ public class CategoryTest
 		Thread.sleep(5000);
 		WebElement lUsingTable = PosTable.pickRdmUsingTable(lDriver);
 		lUsingTable.click();
-		try {
+		try
+		{
 			PosUtil.screenshot(lDriver, "T1822.png");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 		PosUtil.cancel(lDriver);
@@ -168,7 +170,8 @@ public class CategoryTest
 		PosPattern lPattern = PosMenuOption.addOption(lDriver);
 		lPattern.editOption();
 		Thread.sleep(5000);
-		try {
+		try 
+		{
 			PosUtil.screenshot(lDriver, "T1824.png");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -182,7 +185,8 @@ public class CategoryTest
 		iDriver.findElement(By.id("00N28000007Hr3C")).sendKeys(iPriority);
 	}
 	
-	private void addMenuData(WebDriver iDriver, String iName, String iCategory){
+	private void addMenuData(WebDriver iDriver, String iName, String iCategory)
+	{
 		//Name
 		iDriver.findElement(By.id("Name")).sendKeys(iName);
 		
@@ -190,7 +194,8 @@ public class CategoryTest
 		iDriver.findElement(By.id("CF00N28000007Hr4Y")).sendKeys(iCategory);
 	}
 	
-	private void editMenu(WebDriver iDriver, String iMenu) throws InterruptedException {
+	private void editMenu(WebDriver iDriver, String iMenu) throws InterruptedException 
+	{
 		PosUtil.findnClick(iDriver, BY.LINKTEXT, iMenu);
 		WebElement lEpWebElement = iDriver.findElement(By.id("topButtonRow"));
 		WebElement lEditWebElement = lEpWebElement.findElement(By.xpath(".//input[@name='edit']"));
@@ -199,6 +204,5 @@ public class CategoryTest
 		iDriver.findElement(By.id("00N28000007Hr4c")).click();
 		PosBrowser.save(iDriver);
 	}
-	
 
 }

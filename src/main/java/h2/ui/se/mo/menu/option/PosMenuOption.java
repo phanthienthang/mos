@@ -1,4 +1,4 @@
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.menu.option;
 
 import java.util.List;
 
@@ -6,20 +6,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import h2.ui.se.mo.menu.option.pattern.PosPattern;
+import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 public class PosMenuOption 
 {
 	
-	/**
-	 * @param iDriver
-	 */
-	public static void complete(WebDriver iDriver)
-	{
-		//完了
-		PosUtil.findnClick(iDriver, BY.LINKTEXT, "完了");
-	}
-
 	/**
 	 * Add new pattern option and return the latest added pattern.
 	 * 

@@ -1,4 +1,4 @@
-package h2.ui.se.mo.util;
+package h2.ui.se.mo.order;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
+import h2.ui.se.mo.table.PosTable;
+import h2.ui.se.mo.util.PosUtil;
 import h2.ui.se.mo.util.PosUtil.BY;
 
 public class PosOrder {

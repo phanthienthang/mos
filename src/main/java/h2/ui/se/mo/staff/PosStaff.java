@@ -75,8 +75,7 @@ public class PosStaff
 
 		// 誕生日 - Birthday
 		if (iStaff.getBirthday() != null) {
-			iDriver.findElement(By.id("00N28000007Hr75"))
-					.sendKeys(new SimpleDateFormat("yyyy/mm/dd").format(iStaff.getBirthday()));
+			iDriver.findElement(By.id("00N28000007Hr75")).sendKeys(new SimpleDateFormat("yyyy/mm/dd").format(iStaff.getBirthday()));
 		}
 
 		// 郵便番号 - Postal Code

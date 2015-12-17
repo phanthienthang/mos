@@ -12,7 +12,7 @@ public class PosConfig {
 	 * @author thienthang
 	 *
 	 */
-	private static final String BUNDLE_NAME = "MOConfig";// $NON-NLS-0$
+	private static final String BUNDLE_NAME = "konfig";// $NON-NLS-0$
 
 	private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

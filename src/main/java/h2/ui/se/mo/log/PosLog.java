@@ -31,23 +31,43 @@ public class PosLog
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmountIn
+	 */
 	public static void cashin(WebDriver iDriver, String iAmountIn)
 	{
 		iDriver.findElement(By.id("amountIn")).sendKeys(iAmountIn);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmount10kIn
+	 */
 	public static void cash10kIn(WebDriver iDriver, String iAmount10kIn){
 		iDriver.findElement(By.id("numberOf10000YenIn")).sendKeys(iAmount10kIn);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmountOut
+	 */
 	public static void cashout(WebDriver iDriver, String iAmountOut){
 		iDriver.findElement(By.id("amountOut")).sendKeys(iAmountOut);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmount10kOut
+	 */
 	public static void cash10kOut(WebDriver iDriver, String iAmount10kOut){
 		iDriver.findElement(By.id("numberOf10000YenOut")).sendKeys(iAmount10kOut);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iComment
+	 */
 	public static void comment(WebDriver iDriver, String iComment){
 		iDriver.findElement(By.id("comment")).sendKeys(iComment);
 	}

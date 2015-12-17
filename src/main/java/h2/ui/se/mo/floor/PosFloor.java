@@ -12,6 +12,10 @@ import org.openqa.selenium.WebDriver;
  */
 public class PosFloor {
 	
+	/**
+	 * @param iDriver
+	 * @param iFloor
+	 */
 	public static void addFloor(WebDriver iDriver, Floor iFloor)
 	{
 		

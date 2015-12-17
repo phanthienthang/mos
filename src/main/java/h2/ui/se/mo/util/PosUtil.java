@@ -47,6 +47,12 @@ public class PosUtil
 	protected static OS mPlatform = OS.windows;
 	protected static Map<String, WebElement> configs;
 	
+	/**
+	 * Initialize Chrome driver and auto install MyOrder application as an extension.
+	 * 
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public static WebDriver init() throws InterruptedException 
 	{
 		
@@ -72,6 +78,11 @@ public class PosUtil
 		return login(driver);
 	}
 	
+	/**
+	 * Initialize option
+	 * 
+	 * @return
+	 */
 	public static ChromeOptions initOption ()
 	{
 		System.setProperty(PosConstant.WEBDRIVER_CHROME_DRIVER, PosConfig.getConfig(PosConstant.WEBDRIVER_CHROME_DRIVER));
@@ -84,6 +95,13 @@ public class PosUtil
 		return options;
 	}
 	
+	/**
+	 * Initialize Chrome driver, install MyOrder application as an extension
+	 * and run this application with localization.
+	 * 
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public static WebDriver initLocal() throws InterruptedException 
 	{
 		// For use with ChromeDriver:
@@ -99,6 +117,8 @@ public class PosUtil
 	}
 	
 	/**
+	 * Login Salesforce to use MyOrder.
+	 * 
 	 * @param iDriver
 	 * @return
 	 * @throws InterruptedException
@@ -144,6 +164,7 @@ public class PosUtil
 	}
 	
 	/**
+	 * Check the element is loaded or not.
 	 * 
 	 * @param iDriver
 	 * @return
@@ -165,6 +186,7 @@ public class PosUtil
 	}
 	
 	/**
+	 * Get the current platform.
 	 * @return
 	 * @throws IOException
 	 */
@@ -188,6 +210,7 @@ public class PosUtil
 	}
 	
 	/**
+	 * Get platform information
 	 * @return
 	 */
 	public static OS getPlatform() 
@@ -454,6 +477,9 @@ public class PosUtil
 		return iDriver;
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void cancel(WebDriver iDriver) {
 		try 
 		{
@@ -465,6 +491,9 @@ public class PosUtil
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void randomEdit(WebDriver iDriver)
 	{
 		try {
@@ -501,6 +530,9 @@ public class PosUtil
 		return false;
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handleAlert(WebDriver iDriver)
 	{
 		try 
@@ -544,6 +576,10 @@ public class PosUtil
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iId
+	 */
 	private static void waitClickId(WebDriver iDriver, String iId)
 	{
 		if (!PosValidator.isExistID(iDriver, iId))
@@ -554,6 +590,10 @@ public class PosUtil
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iXPath
+	 */
 	private static void waitClickXPath(WebDriver iDriver, String iXPath)
 	{
 		if (!PosValidator.isExistXPath(iDriver, iXPath)) {
@@ -563,6 +603,10 @@ public class PosUtil
 		iDriver.findElement(By.xpath(iXPath)).click();
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iCssSelector
+	 */
 	private static void waitClickCssSelector(WebDriver iDriver, String iCssSelector)
 	{
 		if (!PosValidator.isExistCssSelector(iDriver, iCssSelector)) 
@@ -574,6 +618,10 @@ public class PosUtil
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iName
+	 */
 	private static void waitClickName(WebDriver iDriver, String iName) 
 	{
 		if (!PosValidator.isExistName(iDriver, iName)) {
@@ -583,6 +631,10 @@ public class PosUtil
 		iDriver.findElement(By.name(iName)).click();
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iLink
+	 */
 	private static void waitClickLink(WebDriver iDriver, String iLink) 
 	{
 		if (!PosValidator.isExistLink(iDriver, iLink)) {
@@ -663,6 +715,12 @@ public class PosUtil
 	}
 	
 	
+	/**
+	 * @param iDriver
+	 * @param iBy
+	 * @param iContent
+	 * @return
+	 */
 	private static boolean isElementsExist(WebDriver iDriver, BY iBy, String iContent) 
 	{
 		List<WebElement> lElementList = new ArrayList<WebElement>();
@@ -707,6 +765,10 @@ public class PosUtil
 
 	
 	
+	/**
+	 * @param iDriver
+	 * @param iTableName
+	 */
 	public static void pickTable(WebDriver iDriver, String iTableName) {
 		
 		try {
@@ -746,29 +808,30 @@ public class PosUtil
 		findnClick(iDriver, BY.LINKTEXT, "注文確認"); //ORDER CONFIRM
 	}
 
+	/**
+	 * @param iDriver
+	 * @param iTable
+	 * @throws InterruptedException
+	 */
 	public static void checkOut(WebDriver iDriver, String iTable) throws InterruptedException 
 	{
-		/*Thread.sleep(1000);
-		PosUtil.openSetting(iDriver, "注文");
-		Thread.sleep(2000);*/
-		
-		/*WebElement lTable = pickOrderTable(iDriver, iTable);
-		
-		Actions lBuilder = new Actions(iDriver);
-		lBuilder.clickAndHold(lTable).build().perform();
-		Thread.sleep(2000);
-		lBuilder.release(lTable).build().perform();
-		
-		Thread.sleep(1000);
-		iDriver.findElement(By.linkText("会計")).click();*/
 		handleOption(iDriver, iTable, "会計");
 	}
 
+	/**
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void handleEdit(WebDriver iDriver, String iTable)
 	{
 		handleOption(iDriver, iTable, "編集");
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iTable
+	 * @param iOption
+	 */
 	private static void handleOption(WebDriver iDriver, String iTable, String iOption) 
 	{
 		try {
@@ -794,40 +857,67 @@ public class PosUtil
 		}
 	}
 	
+	/**
+	 * Check out history
+	 * 
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void viewTabHistory(WebDriver iDriver, String iTable) 
 	{
 		handleOption(iDriver, iTable, "注文履歴");
 	}
 	
+	/**
+	 * Add order
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void addOrder(WebDriver iDriver, String iTable) {
 		handleOption(iDriver, iTable, "追加注文");
 	}
 
+	/**
+	 * Move table / group table
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void moveTable(WebDriver iDriver, String iTable) 
 	{
 		handleOption(iDriver, iTable, "移動");
 	}
 
+	/**
+	 * Sharing check between multiple table
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void shareTable(WebDriver iDriver, String iTable) 
 	{
 		handleOption(iDriver, iTable, "相席");
 	}
 
+	/**
+	 * Delete tab 
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void deleteTab(WebDriver iDriver, String iTable) {
 		handleOption(iDriver, iTable, "削除");
 		
 	}
 
+	/**
+	 * Group tab
+	 * @param iDriver
+	 * @param iTable
+	 */
 	public static void groupTab(WebDriver iDriver, String iTable) {
 		handleOption(iDriver, iTable, "相席");
 	}
 	
-	public static void sendData(WebDriver iDriver, String iID, String iData) 
-	{
-		
-	}
-
 	/**
+	 * Pick specified category
 	 * @param iDriver
 	 * @param iCategory
 	 */
@@ -850,6 +940,8 @@ public class PosUtil
 	}
 
 	/**
+	 * Pick specified menu
+	 * 
 	 * @param iDriver
 	 * @param iMenu
 	 * @return
@@ -893,6 +985,11 @@ public class PosUtil
 		return new Random().nextInt(iLimit);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iFileName
+	 * @throws IOException
+	 */
 	public static void screenshot(WebDriver iDriver, String iFileName) throws IOException 
 	{
 		// Select the target WebElement
@@ -923,19 +1020,27 @@ public class PosUtil
 				FileUtils.copyFile(screenshot, new File(iFileName));
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getRandomName()
 	{
 		StringBuilder builder = new StringBuilder();
-		 while(builder.toString().length() == 0) {
-		        int length = mRandom.nextInt(5)+5;
-		        for(int i = 0; i < length; i++)
-		            builder.append(CHARACTERS.charAt(mRandom.nextInt(CHARACTERS.length())));
-		        if(mIdentifier.contains(builder.toString())) 
-		            builder = new StringBuilder();
-		    }
-		    return builder.toString();
+		while (builder.toString().length() == 0) 
+		{
+			int length = mRandom.nextInt(5) + 5;
+			for (int i = 0; i < length; i++)
+				builder.append(CHARACTERS.charAt(mRandom.nextInt(CHARACTERS.length())));
+			if (mIdentifier.contains(builder.toString()))
+				builder = new StringBuilder();
+		}
+		return builder.toString();
 	}
 	
+	/**
+	 * Dismiss both alert and confirm
+	 * @param iDriver
+	 */
 	public static void dismiss(WebDriver iDriver) 
 	{
 		try 
@@ -949,7 +1054,7 @@ public class PosUtil
 		}
 		catch (NoAlertPresentException e)
 		{
-			handleAlert(iDriver);
+			logger.info(PosConstant.MESSAGE_ERROR_ALERT_HANDLE, new Throwable(e.getMessage()));
 		}
 	}
 

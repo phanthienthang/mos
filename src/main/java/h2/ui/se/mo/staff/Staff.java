@@ -49,6 +49,17 @@ public class Staff
 		this.name = iName;
 	}
 	
+	/**
+	 * @param iName
+	 * @param iBirthDay
+	 * @param iMail
+	 * @param iPhone
+	 * @param iMobile
+	 * @param iPostalCode
+	 * @param iStreet
+	 * @param isAccount
+	 * @param isWaiter
+	 */
 	public Staff(String iName, Date iBirthDay, String iMail, String iPhone, String iMobile, String iPostalCode, String iStreet, boolean isAccount, boolean isWaiter)
 	{
 		this.name = iName;
@@ -63,6 +74,21 @@ public class Staff
 		
 	}
 	
+	/**
+	 * @param iName
+	 * @param iUserId
+	 * @param iPhotoId
+	 * @param iDesc
+	 * @param iUser
+	 * @param isAccount
+	 * @param isWaiter
+	 * @param iMail
+	 * @param iPhone
+	 * @param iMobile
+	 * @param iBirthDay
+	 * @param iPostalCode
+	 * @param iStreet
+	 */
 	public Staff(String iName, String iUserId, String iPhotoId, String iDesc, String iUser, boolean isAccount, boolean isWaiter, 
 			String iMail, String iPhone, String iMobile, Date iBirthDay, String iPostalCode, String iStreet) 
 	{

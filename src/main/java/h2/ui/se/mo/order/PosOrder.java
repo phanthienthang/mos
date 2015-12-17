@@ -155,7 +155,7 @@ public class PosOrder {
 		if (lRdmTable != null) {
 			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
 			System.out.println("Random table: "+lTableName);
-			if (!PosTable.isTabAvailable(lRdmTable)) 
+			if (!PosTable.isAvailable(lRdmTable)) 
 			{
 				orderRandom(iDriver, iService, iRate, iPrice, iComment, iRdmMenu, iMenuQuantity);
 			} else {
@@ -265,7 +265,7 @@ public class PosOrder {
 		if (lRdmTable != null) {
 			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
 			System.out.println("Random table: "+lTableName);
-			if (!PosTable.isTabAvailable(lRdmTable)) 
+			if (!PosTable.isAvailable(lRdmTable)) 
 			{
 				orderRandom(iDriver);
 			}
@@ -285,7 +285,7 @@ public class PosOrder {
 		if (lRdmTable != null) {
 			String lTableName = lRdmTable.getText().replaceAll("\\W", "");
 			System.out.println("Random table: "+lTableName);
-			if (!PosTable.isTabAvailable(lRdmTable)) 
+			if (!PosTable.isAvailable(lRdmTable)) 
 			{
 				orderRandom(iDriver,iService, iRate, iPrice);
 			}

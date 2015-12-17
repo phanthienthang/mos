@@ -191,6 +191,10 @@ public class PosTable
 	}
 	
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 */
 	public static WebElement pickRdmTable(WebDriver iDriver) 
 	{
 		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
@@ -213,6 +217,10 @@ public class PosTable
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 */
 	public static WebElement pickRdmUsingTable(WebDriver iDriver) 
 	{
 		System.out.println("Call method pickRdmTable(WebDriver iDriver) in PosUtil.java");
@@ -235,7 +243,11 @@ public class PosTable
 		}
 	}
 	
-	public static boolean isTabAvailable(WebElement iTab)
+	/**
+	 * @param iTab
+	 * @return
+	 */
+	public static boolean isAvailable(WebElement iTab)
 	{
 		if (iTab.getAttribute("class").contains("empty")) {
 			return true;

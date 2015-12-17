@@ -23,26 +23,43 @@ public class PosCheck
 	
 	public enum Type {Info, Payment}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void updateDocument(WebDriver iDriver)
 	{ 
 		handleUpdateLink(iDriver, Type.Info);
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void updatePaymentInfo(WebDriver iDriver)
 	{
 		handleUpdateLink(iDriver, Type.Payment);
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handlePayByCash(WebDriver iDriver)
 	{
 		handlePayCash(iDriver, 0);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iExtraAmount
+	 */
 	public static void handlePayExtraByCash(WebDriver iDriver, int iExtraAmount)
 	{
 		handlePayCash(iDriver, iExtraAmount);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iExtra
+	 */
 	private static void handlePayCash(WebDriver iDriver, int iExtra) {
 		
 		handlePayment(iDriver, "現金");
@@ -53,21 +70,33 @@ public class PosCheck
 		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal));
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handlePayByCard(WebDriver iDriver)
 	{
 		handlePayment(iDriver, "クレジットカード");
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handlePayByGifs(WebDriver iDriver)
 	{
 		handlePayment(iDriver, "商品券");
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handlePayByGif(WebDriver iDriver)
 	{
 		handlePayment(iDriver, "商品券(釣り有り)");
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handlePayByOther(WebDriver iDriver)
 	{
 		handlePayment(iDriver, "掛計");
@@ -85,6 +114,9 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 */
 	public static void handleCancel(WebDriver iDriver)
 	{
 		WebElement lCancelElem = iDriver.findElement(By.linkText("会計取消"));
@@ -96,6 +128,10 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 */
 	public static String handleGetAmount(WebDriver iDriver) 
 	{
 		String lAmount = "0";
@@ -112,11 +148,12 @@ public class PosCheck
 		else {
 			return handleGetAmount(iDriver);
 		}
-		
-		
-		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @return
+	 */
 	public static String handleTaxAmount(WebDriver iDriver) 
 	{
 		String lAmount = "0";
@@ -133,31 +170,54 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iValue
+	 */
 	public static void handleInputServiceCharge(WebDriver iDriver, String iValue)
 	{
 		handleInput(iDriver, "input[ng-model='editingBill.ServiceCharge__c']", iValue);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iValue
+	 */
 	public static void handleInputDiscountRate(WebDriver iDriver, String iValue){
 		handleInput(iDriver, "input[ng-model='editingBill.DiscountRate__c']", iValue);
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iValue
+	 */
 	public static void handleInputDiscountPrice(WebDriver iDriver, String iValue)
 	{
 		handleInput(iDriver, "input[ng-model='editingBill.DiscountPrice__c']", iValue);
 	}
 	
-	//Close and get back to previous screen
-	public static void handleClose(WebDriver iDriver){
+	/**
+	 * Close and get back to previous screen
+	 * @param iDriver
+	 */
+	public static void handleClose(WebDriver iDriver)
+	{
 		PosUtil.findnClick(iDriver, BY.LINKTEXT, "Close");
 	}
 	
-	//会計取消 - cancel account
+	/**
+	 * 会計取消 - cancel account
+	 * @param iDriver
+	 */
 	public static void handleCancelAccount(WebDriver iDriver)
 	{
 		PosUtil.findnClick(iDriver, BY.LINKTEXT, "会計取消");
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iPayment
+	 */
 	private static void handlePayment(WebDriver iDriver, String iPayment)
 	{
 		List<WebElement> lPaymentList = iDriver.findElements(By.cssSelector("li[ng-repeat-start='paymentMethod in data.paymentMethods']"));
@@ -177,6 +237,11 @@ public class PosCheck
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iSelector
+	 * @param iValue
+	 */
 	private static void handleInput(WebDriver iDriver, String iSelector, String iValue) {
 		WebElement lElement = iDriver.findElement(By.cssSelector(iSelector));
 		lElement.sendKeys(iValue);
@@ -195,6 +260,9 @@ public class PosCheck
 		
 	}
 
+	/**
+	 * @param iDriver
+	 */
 	public static void payOrder(WebDriver iDriver)
 	{
 		handlePayment(iDriver, "現金");
@@ -212,6 +280,10 @@ public class PosCheck
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iNo
+	 */
 	public static void updateMale(WebDriver iDriver, int iNo) {
 		WebElement lSelectElement = iDriver.findElement(By.cssSelector("select[ng-model='editingCheck.NumberOfMale__c']"));
 		lSelectElement.click();
@@ -224,6 +296,10 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iNo
+	 */
 	public static void updateFemale(WebDriver iDriver, int iNo) {
 		WebElement lSelectElement = iDriver.findElement(By.cssSelector("select[ng-model='editingCheck.NumberOfFemale__c']"));
 		lSelectElement.click();
@@ -236,6 +312,10 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iComment
+	 */
 	public static void updateComment(WebDriver iDriver, String iComment) {
 		WebElement lCommentElement = iDriver.findElement(By.cssSelector("textarea[ng-model='editingCheck.Comment__c']"));
 		lCommentElement.clear();
@@ -255,6 +335,10 @@ public class PosCheck
 		
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iCss
+	 */
 	private static void handleUpdate(WebDriver iDriver, String iCss) 
 	{
 		WebElement lUlElem = iDriver.findElement(By.cssSelector(iCss));
@@ -269,24 +353,40 @@ public class PosCheck
 		}
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmount
+	 */
 	public static void updateServiceCharge(WebDriver iDriver, int iAmount) {
 		WebElement lElement = iDriver.findElement(By.cssSelector("input[ng-model='editingBill.ServiceCharge__c']"));
 		lElement.clear();
 		lElement.sendKeys(String.valueOf(iAmount));
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmount
+	 */
 	public static void updateDiscountRate(WebDriver iDriver, int iAmount) {
 		WebElement lElement = iDriver.findElement(By.cssSelector("input[ng-model='editingBill.DiscountRate__c']"));
 		lElement.clear();
 		lElement.sendKeys(String.valueOf(iAmount));
 	}
 	
+	/**
+	 * @param iDriver
+	 * @param iAmount
+	 */
 	public static void updateDiscountPrice(WebDriver iDriver, int iAmount) {
 		WebElement lElement = iDriver.findElement(By.cssSelector("input[ng-model='editingBill.DiscountPrice__c']"));
 		lElement.clear();
 		lElement.sendKeys(String.valueOf(iAmount));
 	}
 
+	/**
+	 * @param iDriver
+	 * @param iAmex
+	 */
 	public static void payByCard(WebDriver iDriver, Card iAmex)
 	{
 		handlePayByCard(iDriver);
@@ -294,13 +394,20 @@ public class PosCheck
 		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal), Card.Amex);
 	}
 	
-	public static void payByGift(WebDriver iDriver) {
+	/**
+	 * @param iDriver
+	 */
+	public static void payByGift(WebDriver iDriver) 
+	{
 		handlePayByGifs(iDriver);
 		int lTotal = Integer.valueOf(PosCheck.handleGetAmount(iDriver)) + Integer.valueOf(PosCheck.handleTaxAmount(iDriver));
 		PosNumPad.handleInputNo(iDriver, String.valueOf(lTotal));
-		
 	}
 
+	/**
+	 * Pay a check by all type.
+	 * @param iDriver
+	 */
 	public static void payByAll(WebDriver iDriver)
 	{
 		handlePayByCash(iDriver);
@@ -321,6 +428,11 @@ public class PosCheck
 		
 	}
 	
+	/**
+	 * Get Check No
+	 * @param iDriver
+	 * @return
+	 */
 	public static String getCheckNo(WebDriver iDriver) {
 		WebElement lElem = iDriver.findElement(By.cssSelector("ul[ng-if='!isCheckEditing']"));
 		WebElement lLiElem = lElem.findElement(By.xpath(".//li[@class='form']"));

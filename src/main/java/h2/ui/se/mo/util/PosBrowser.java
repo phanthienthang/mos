@@ -3,6 +3,7 @@ package h2.ui.se.mo.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
@@ -22,6 +23,8 @@ import h2.ui.se.mo.util.PosUtil.BY;
 public class PosBrowser 
 {
 	
+	static Logger logger = Logger.getLogger(PosBrowser.class);
+	
 	/**
 	 * @param iDriver
 	 * @throws InterruptedException
@@ -39,7 +42,7 @@ public class PosBrowser
 			Thread.sleep(1000);
 			break;
 		default:
-			System.out.println("Doesn't support other OS except windows and mac");
+			logger.info("Doesn't support other OS except Windows and Mac");
 			break;
 		}
 	}
@@ -61,7 +64,7 @@ public class PosBrowser
 			Thread.sleep(1000);
 			break;
 		default:
-			System.out.println("Doesn't support other OS except windows and mac");
+			logger.info("Doesn't support other OS except Windows and Mac");
 			break;
 		}
 		
@@ -80,9 +83,9 @@ public class PosBrowser
 		//System.out.println(lTabs.get(0));
 		//System.out.println(lTabs.get(1));
 		iDriver.switchTo().window(lTabs.get(1));
-		iDriver.get("https://www.salesforce.com");
+		iDriver.get(PosConstant.SFDC_URL);
 		
-		PosUtil.findnClick(iDriver, BY.ID, "button-login");
+		PosUtil.findnClick(iDriver, BY.ID, PosConstant.SFDC_BTN_ID_LOGIN);
 		PosUtil.loginInputHandle(iDriver);
 	}
 	
@@ -91,9 +94,15 @@ public class PosBrowser
 	 */
 	public static void openAllMOTab(WebDriver iDriver)
 	{
-		WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
-		lDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("AllTab_Tab")));
-		iDriver.findElement(By.id("AllTab_Tab")).click();
+		try {
+			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
+			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.id(PosConstant.SFDC_BTN_ID_ALL_TAB)));
+			iDriver.findElement(By.id(PosConstant.SFDC_BTN_ID_ALL_TAB)).click();
+		}
+		catch (ElementNotVisibleException e) {
+			logger.info("ERROR WHEN CLICK ALL TAB BUTTON", new Throwable(e.getMessage()));
+		}
+		
 	}
 	
 	/**
@@ -101,12 +110,15 @@ public class PosBrowser
 	 */
 	public static void newHandle(WebDriver iDriver)
 	{
-		try {
+		try
+		{
 			WebDriverWait lDriverWait = new WebDriverWait(iDriver,30);
-			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.name("new")));
-			iDriver.findElement(By.name("new")).click();
-		} catch (ElementNotVisibleException e) {
-			newHandle(iDriver);
+			lDriverWait.until(ExpectedConditions.elementToBeClickable(By.name(PosConstant.SFDC_BTN_NAME_NEW)));
+			iDriver.findElement(By.name(PosConstant.SFDC_BTN_NAME_NEW)).click();
+		} 
+		catch (ElementNotVisibleException e)
+		{
+			logger.info("ERROR WHEN CLICK NEW BUTTON", new Throwable(e.getMessage()));
 		}
 		
 	}

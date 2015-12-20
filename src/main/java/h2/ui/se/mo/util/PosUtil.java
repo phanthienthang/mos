@@ -132,6 +132,11 @@ public class PosUtil
 		return login(iDriver);
 	}
 	
+	public static String getPosWindow(WebDriver iDriver) {
+		
+		return new ArrayList<String> (iDriver.getWindowHandles()).get(0);
+	}
+	
 	/**
 	 * @param iDriver
 	 * @return

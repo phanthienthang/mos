@@ -119,7 +119,7 @@ public class FloorTest
 		Thread.sleep(2000);
 		//lWait.until(ExpectedConditions.visibilityOfAllElements(iDriver.findElements(By.linkText("Edit"))));
 		List<WebElement> lElems = iDriver.findElements(By.linkText("Edit"));
-		int lRandomFloor = random(lElems.size())+1;
+		int lRandomFloor = PosUtil.random(lElems.size())+1;
 		
 		//System.out.println("Random Floor: "+lElems.get(lRandomFloor).getText());
 		lElems.get(lRandomFloor).click();
@@ -138,12 +138,6 @@ public class FloorTest
 			lActiveElem.click();
 		}
 	}
-	
-	private int random(int iLimit) 
-	{
-		return new Random().nextInt(iLimit);
-	}
-	
 	
 	/**
 	 * Open Floor Tab.

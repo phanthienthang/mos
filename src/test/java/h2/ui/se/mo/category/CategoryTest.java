@@ -26,7 +26,7 @@ public class CategoryTest
 		WebDriver lDriver = PosUtil.initLocal();
 		Thread.sleep(5000);
 		
-		String lPosWindow = new ArrayList<String> (lDriver.getWindowHandles()).get(0);
+		String lPosWindow = PosUtil.getPosWindow(lDriver);
 		
 		PosBrowser.loginSalesforce(lDriver);
 		
@@ -42,6 +42,8 @@ public class CategoryTest
 		//Create 3x categories
 		Thread.sleep(2000);
 		List<String> lCategoryList = new ArrayList<String>();
+		
+		//Create 3 different categories
 		for (int i = 0; i < 3; i++) 
 		{
 			String lName = "カテゴリ"+i;
@@ -60,7 +62,8 @@ public class CategoryTest
 		PosBrowser.openTab(lDriver, "メニューマスタ");
 		PosBrowser.newHandle(lDriver);
 		PosBrowser.kontinue(lDriver);
-		
+
+		//Create 3 different 3 menu categories
 		List<String> lMenuList = new ArrayList<String>();		
 		for (int i = 0; i < lCategoryList.size(); i++) 
 		{
@@ -178,6 +181,13 @@ public class CategoryTest
 		}
 	}
 	
+	/**
+	 * Add data for fields in Salesforce browser
+	 * @param iDriver
+	 * @param iName
+	 * @param iAbbre
+	 * @param iPriority
+	 */
 	private void addCategoryData(WebDriver iDriver, String iName, String iAbbre, String iPriority)
 	{
 		iDriver.findElement(By.id("Name")).sendKeys(iName);
@@ -185,6 +195,13 @@ public class CategoryTest
 		iDriver.findElement(By.id("00N28000007Hr3C")).sendKeys(iPriority);
 	}
 	
+	
+	/**
+	 * Add menu category by specified name and category
+	 * @param iDriver
+	 * @param iName
+	 * @param iCategory
+	 */
 	private void addMenuData(WebDriver iDriver, String iName, String iCategory)
 	{
 		//Name
@@ -194,6 +211,12 @@ public class CategoryTest
 		iDriver.findElement(By.id("CF00N28000007Hr4Y")).sendKeys(iCategory);
 	}
 	
+	/**
+	 * Edit specified menu.
+	 * @param iDriver
+	 * @param iMenu
+	 * @throws InterruptedException
+	 */
 	private void editMenu(WebDriver iDriver, String iMenu) throws InterruptedException 
 	{
 		PosUtil.findnClick(iDriver, BY.LINKTEXT, iMenu);
